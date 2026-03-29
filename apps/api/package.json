@@ -1,0 +1,13 @@
+{
+  "name": "@gymxp/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "lint": "echo API lint TODO",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}
+

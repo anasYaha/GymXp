@@ -1,0 +1,13 @@
+{
+  "name": "@gymxp/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "expo start",
+    "build": "echo Mobile build TODO",
+    "lint": "echo Mobile lint TODO",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}
+
