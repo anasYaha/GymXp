@@ -8,3 +8,17 @@ export const initialBranchState: ActiveBranchState = {
   brandId: null
 };
 
+export const setActiveBranch = (
+  state: ActiveBranchState,
+  branchId: string,
+  brandId: string
+): ActiveBranchState => ({
+  ...state,
+  branchId,
+  brandId
+});
+
+export const clearActiveBranch = (): ActiveBranchState => ({
+  ...initialBranchState
+});
+

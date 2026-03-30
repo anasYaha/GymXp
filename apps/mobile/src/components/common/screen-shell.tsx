@@ -1,2 +1,16 @@
-export const ScreenShell = () => "TODO: shared mobile screen shell";
+export interface ScreenShellProps<TContent> {
+  title: string;
+  subtitle?: string;
+  content: TContent;
+}
+
+export const ScreenShell = <TContent>({
+  title,
+  subtitle,
+  content
+}: ScreenShellProps<TContent>) => ({
+  title,
+  subtitle,
+  content
+});
 

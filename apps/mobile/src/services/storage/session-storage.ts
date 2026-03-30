@@ -1,6 +1,12 @@
+let storedToken: string | null = null;
+
 export const sessionStorage = {
-  saveToken: async (_token: string) => {
-    // TODO: persist auth token securely.
+  saveToken: async (token: string) => {
+    storedToken = token;
+  },
+  getToken: async () => storedToken,
+  clearToken: async () => {
+    storedToken = null;
   }
 };
 
