@@ -14,7 +14,8 @@
     "dev:admin": "pnpm --filter @gymxp/admin-web dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "test:dev-a": "node scripts/test-dev-a.mjs"
   }
 }
 

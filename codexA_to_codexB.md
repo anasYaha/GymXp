@@ -305,3 +305,99 @@ feat(mobile): finish dev a member scaffold and codex handoff doc
 
 14) Human-Friendly Summary
 The remaining Developer A mobile scaffold work is done for this repo’s current scaffold-first stage. The member-side modules now cover auth, onboarding, dashboard foundation, sessions, leaderboard, profile, and settings in a branch-aware way, and the Codex handoff file now contains the reusable instructions you asked for. The only unfinished part is git operations: commit and push were blocked by environment permission approval, not by missing code.
+# commit 3
+OUTPUT 1: I added an automatic zero-dependency test tool for Developer A work.
+
+Run it with:
+
+node scripts/test-dev-a.mjs
+Or with the workspace shortcut:
+
+npm run test:dev-a
+What it checks automatically:
+
+required Dev A mobile files exist
+route resolver includes login, onboarding-branch, and dashboard-home
+auth/branch/dashboard/session/leaderboard services export the expected functions
+key API paths are present
+demo fallback constants exist
+Dev A screen files no longer contain TODO: placeholders
+screen scaffolds use ScreenShell
+codexA_to_codexB.md contains the required handoff sections
+Files added/updated:
+
+test-dev-a.mjs
+package.json
+README.md
+I also ran it successfully:
+
+node scripts/test-dev-a.mjs
+Result: Passed: 62, Failed: 0
+OUTPUT 2:
+
+CODEX HANDOFF REPORT
+1) Objective Completed
+Added an automated local validation tool for Developer A mobile scaffold work, requiring no package installation or manual inspection beyond running one command.
+
+2) Files Created
+c:\Users\anasy\Desktop\GameXp\GymXp\scripts\test-dev-a.mjs
+3) Files Modified
+c:\Users\anasy\Desktop\GameXp\GymXp\package.json
+c:\Users\anasy\Desktop\GameXp\GymXp\scripts\README.md
+4) Core Logic Added/Changed
+Added scripts/test-dev-a.mjs, a zero-dependency Node script that performs automated static validation of the Developer A scaffold.
+Added root script entry:
+test:dev-a -> node scripts/test-dev-a.mjs
+The script validates:
+presence of key mobile files
+route resolution strings
+exported service functions
+expected API endpoint strings
+demo constants
+absence of unresolved TODO: placeholders in Dev A screens
+presence of required handoff-report sections in codexA_to_codexB.md
+5) Dependencies / Install Commands
+None.
+
+Commands run:
+
+node scripts/test-dev-a.mjs
+Optional user command:
+
+npm run test:dev-a
+6) Database / Schema / Migration Changes
+None.
+
+7) API / Backend Changes
+None.
+
+8) Frontend / UI Changes
+None directly. This task added automated validation for existing Dev A frontend/mobile scaffold files.
+
+9) Bugs Fixed / Root Cause
+None.
+
+10) Remaining Issues / Blockers
+This tool is a static validator, not a runtime mobile UI test runner.
+It does not replace Expo rendering tests or TypeScript compilation.
+It was intentionally kept zero-dependency because the environment previously lacked pnpm and installable dependencies.
+11) Testing Steps
+Run:
+
+node scripts/test-dev-a.mjs
+Or:
+
+npm run test:dev-a
+Expected result:
+
+summary line with Passed and Failed
+exit code 0 when all checks pass
+currently verified locally with Passed: 62 and Failed: 0
+12) Recommended Next Task
+If stronger automation is needed next, add a second-stage test harness that executes selected mobile service functions at runtime once dependencies are installed and the team is ready for a real Expo/TS test environment.
+
+13) Suggested Commit Message
+chore(scripts): add automated dev-a mobile scaffold checker
+
+14) Human-Friendly Summary
+There’s now a one-command automated checker in the repo for the Developer A work. It gives you a quick pass/fail report without needing to inspect files manually or install extra tooling.
