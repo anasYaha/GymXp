@@ -1,7 +1,6 @@
+import { DEMO_GAMIFICATION_SUMMARY } from "../../constants/demo";
+
 export const getGamificationSummary = async () => {
-  return Promise.resolve({
-    status: "TODO",
-    message: "Connect XP and streak summary"
-  });
+  return Promise.resolve(DEMO_GAMIFICATION_SUMMARY);
 };
 
