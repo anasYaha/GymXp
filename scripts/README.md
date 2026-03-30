@@ -16,3 +16,9 @@ TODO: add `setup.ps1` and `seed-demo-data.ts` once dependencies are installed.
 - `npm run test:dev-a`
   Workspace shortcut for the same Developer A validation script.
 
+- `node scripts/render-mobile-preview.mjs`
+  Generates a local HTML preview for the current mobile scaffold in `tmp/mobile-preview.html`.
+
+- `npm run preview:mobile`
+  Workspace shortcut for the mobile preview generator.
+

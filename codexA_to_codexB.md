@@ -401,3 +401,91 @@ chore(scripts): add automated dev-a mobile scaffold checker
 
 14) Human-Friendly Summary
 There’s now a one-command automated checker in the repo for the Developer A work. It gives you a quick pass/fail report without needing to inspect files manually or install extra tooling.
+# commit 4 
+OUTPUT 1: Yes. I added a tool so you can visually see the frontend scaffold.
+
+Use:
+
+npm run preview:mobile
+Or:
+
+node scripts/render-mobile-preview.mjs
+It generates this preview file:
+tmp/mobile-preview.html
+
+What it does:
+
+creates a local HTML page
+shows the member flow visually
+shows branch selection
+shows dashboard stats
+shows leaderboard and session preview
+works without Expo or extra dependencies
+Files added/updated:
+
+render-mobile-preview.mjs
+package.json
+README.md
+I also ran it successfully, and the preview file was generated.
+
+OUTPUT 2:
+
+CODEX HANDOFF REPORT
+1) Objective Completed
+Added a local visual preview tool for the Developer A mobile scaffold so the user can see the frontend structure without needing a full Expo/mobile runtime.
+
+2) Files Created
+c:\Users\anasy\Desktop\GameXp\GymXp\scripts\render-mobile-preview.mjs
+3) Files Modified
+c:\Users\anasy\Desktop\GameXp\GymXp\package.json
+c:\Users\anasy\Desktop\GameXp\GymXp\scripts\README.md
+4) Core Logic Added/Changed
+Added scripts/render-mobile-preview.mjs
+Script generates tmp/mobile-preview.html
+Added root script:
+preview:mobile -> node scripts/render-mobile-preview.mjs
+Preview is zero-dependency and intentionally mirrors the current branch-aware mobile scaffold rather than pretending the app is already fully rendered in Expo
+5) Dependencies / Install Commands
+None.
+
+Commands run:
+
+node scripts/render-mobile-preview.mjs
+6) Database / Schema / Migration Changes
+None.
+
+7) API / Backend Changes
+None.
+
+8) Frontend / UI Changes
+Added an HTML-based visual preview of:
+login -> onboarding branch -> dashboard flow
+active branch context
+dashboard cards
+recent sessions
+leaderboard snapshot
+9) Bugs Fixed / Root Cause
+None.
+
+10) Remaining Issues / Blockers
+This is a preview tool, not a real mobile runtime
+It does not prove Expo rendering works
+It is based on the current scaffold/demo state, which is still not the final production UI implementation
+11) Testing Steps
+Run:
+
+npm run preview:mobile
+Then open:
+
+c:\Users\anasy\Desktop\GameXp\GymXp\tmp\mobile-preview.html
+Expected:
+
+a generated visual page showing the current GymXP mobile scaffold layout and flow
+12) Recommended Next Task
+If the team wants a true frontend preview next, convert the scaffolded mobile screens into real React Native/Expo components and run expo start once dependencies are installed.
+
+13) Suggested Commit Message
+chore(scripts): add local mobile preview generator
+
+14) Human-Friendly Summary
+There is now a simple local tool that lets you see the frontend shape of the current Developer A mobile work in the browser, even though the real mobile UI has not been fully built yet.
