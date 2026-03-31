@@ -1,5 +1,22 @@
+type ApiErrorPayload = {
+  error?: {
+    code?: string;
+    message?: string;
+  };
+};
+
+const env = globalThis as typeof globalThis & {
+  process?: {
+    env?: Record<string, string | undefined>;
+  };
+};
+
+const isApiErrorPayload = (payload: unknown): payload is ApiErrorPayload => {
+  return typeof payload === "object" && payload !== null && "error" in payload;
+};
+
 export const apiClient = {
-  baseUrl: process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://localhost:4000",
+  baseUrl: env.process?.env?.EXPO_PUBLIC_API_BASE_URL ?? "http://localhost:4000",
 
   async request<T>(path: string, init?: RequestInit & { token?: string | null }): Promise<T> {
     const headers = new Headers(init?.headers);
@@ -14,16 +31,10 @@ export const apiClient = {
       headers
     });
 
-    const payload = (await response.json().catch(() => null)) as
-      | T
-      | { error?: { code?: string; message?: string } }
-      | null;
+    const payload = (await response.json().catch(() => null)) as T | ApiErrorPayload | null;
 
     if (!response.ok) {
-      const message =
-        payload && "error" in payload && payload.error?.message
-          ? payload.error.message
-          : "Request failed.";
+      const message = isApiErrorPayload(payload) && payload.error?.message ? payload.error.message : "Request failed.";
 
       throw new Error(message);
     }

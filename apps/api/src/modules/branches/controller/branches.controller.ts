@@ -12,7 +12,9 @@ export const branchesController: Record<"list" | "detail", RequestHandler> = {
   },
 
   async detail(request, response) {
-    const result = await branchesService.getBranchById(request.context!.brandId, request.params.id);
+    const branchId =
+      typeof request.params.id === "string" ? request.params.id : request.params.id?.[0] ?? "";
+    const result = await branchesService.getBranchById(request.context!.brandId, branchId);
     return sendOk(response, result);
   }
 };
