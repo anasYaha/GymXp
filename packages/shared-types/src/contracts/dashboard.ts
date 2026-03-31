@@ -1,18 +1,21 @@
 export interface DashboardSummaryResponse {
-  member: {
-    firstName: string;
+  user: {
+    id: string;
+    fullName: string;
+    email: string;
   };
-  activeBranch: {
+  branch: {
     id: string;
     name: string;
     city: string;
   };
-  xp: number;
-  streakDays: number;
-  rank: number | null;
-  todayInThisGym: {
+  stats: {
+    xp: number;
+    streak: number;
+    rank: number;
+  };
+  today: {
     activeMembers: number;
-    peakWindow: string;
+    topMuscleGroup: string;
   };
 }
-

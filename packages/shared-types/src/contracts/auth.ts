@@ -9,8 +9,7 @@ export interface RegisterRequest {
   fullName: string;
   email: string;
   password: string;
-  brandId: string;
-  branchId: string;
+  brandId?: string;
 }
 
 export interface LoginRequest {
@@ -18,3 +17,6 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface AuthMeResponse {
+  user: User;
+}

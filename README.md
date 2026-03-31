@@ -2,28 +2,24 @@
 
 GymXP is a gym-centered B2B2C platform sold to a gym brand owner, not a public consumer fitness app.
 
-The business model is brand-based:
-- a paying client is a gym brand such as Gym City Tunisia
-- a brand can operate multiple branches
-- members live inside one brand ecosystem
+For the current MVP demo:
+- the demo brand is `Gym City`
+- all member logic is brand-aware and branch-aware
+- each user has one active branch at a time
+- there is no branch switching flow after setup in the main journey
 
-The user experience is branch-based:
-- members primarily act inside one active branch
-- dashboard, sessions, XP, streaks, leaderboard, and activity are scoped to branch context
-- the demo MVP keeps one active branch per user, while the architecture stays ready for future multi-branch support
+## Phase 1 MVP Flow
 
-## Why This Repo Is Structured This Way
+This repository now implements the first usable member flow:
+1. register
+2. login
+3. fetch available branches for the authenticated user's brand
+4. select a branch
+5. land on a branch-aware dashboard summary
 
-This scaffold is designed so two developers can work in parallel with minimal merge conflicts:
-- apps/mobile focuses on the member experience
-- apps/admin-web focuses on the owner or branch admin experience
-- apps/api owns backend, data, and business logic
-- packages/shared-types centralizes contracts that both frontend and backend must agree on early
-- docs keeps product and architecture alignment explicit
+## Repo Layout
 
-## Repository Structure
-
-text
+```text
 GymXP/
   apps/
     api/
@@ -35,52 +31,79 @@ GymXP/
     ui/
   docs/
   scripts/
+```
 
-## MVP Scope
+## Backend Setup
 
-The demo intentionally stays simple:
-- one user belongs to one brand
-- one user has one active branch
-- no branch switching in the main demo flow after setup
-- branch awareness is still represented in models, DTOs, and screen structure
+1. Install dependencies:
 
-## Planned Domains
+```bash
+pnpm install
+```
 
-Member side:
-- auth
-- onboarding
-- active branch context
-- dashboard
-- workout declaration and sessions
-- XP, streaks, rank, branch leaderboard
-- notifications
-- profile and settings
+2. Copy the API env file and adjust values if needed:
 
-Admin side:
-- admin auth
-- branch overview dashboard
-- engagement analytics
-- active members tracking
-- training and peak hour analytics
+```bash
+cp apps/api/.env.example apps/api/.env
+```
 
-Platform side:
-- gym brand management
-- gym branch management
-- roles and permissions
-- shared contracts
-- seed data
-- environment and deployment preparation
+3. Run Prisma generate and migration:
 
-## Run Strategy
+```bash
+pnpm --filter @gymxp/api prisma:generate
+pnpm --filter @gymxp/api prisma:migrate
+```
 
-This repository is scaffold-first. It gives the team a stable file and module layout before full implementation.
+4. Seed demo data:
 
-Suggested next steps:
-1. install workspace dependencies with pnpm install
-2. implement shared contracts first
-3. connect backend modules to Prisma
-4. build mobile member flows against agreed contracts
-5. add admin analytics views once backend snapshots are available
+```bash
+pnpm --filter @gymxp/api prisma:seed
+```
+
+5. Start the API:
+
+```bash
+pnpm dev:api
+```
+
+Default API URL: `http://localhost:4000`
+
+## Mobile Setup
+
+1. Set the mobile API base URL:
+
+```bash
+EXPO_PUBLIC_API_BASE_URL=http://localhost:4000
+```
+
+2. Start the mobile app:
+
+```bash
+pnpm dev:mobile
+```
+
+## Demo Credentials
+
+- `ali@example.com` / `demo12345`
+- `sara@example.com` / `demo12345`
+
+New registrations are created under the seeded `Gym City` brand and can choose a branch after signup.
+
+## Phase 1 Endpoints
+
+- `POST /auth/register`
+- `POST /auth/login`
+- `GET /auth/me`
+- `GET /branches`
+- `GET /branches/:id`
+- `POST /users/select-branch`
+- `GET /dashboard/summary`
+
+## Notes
+
+- Branch responses are filtered to the authenticated user's brand.
+- Branch selection updates `currentBranchId` and issues a fresh token carrying the new branch context.
+- Dashboard summary uses the real selected branch and mocked branch-scoped stats for MVP Phase 1.
 
 ## Important Docs
 
@@ -89,5 +112,3 @@ Suggested next steps:
 - [API Contracts](./docs/API_CONTRACTS.md)
 - [Task Split](./docs/TASK_SPLIT.md)
 - [Development Workflow](./docs/DEVELOPMENT_WORKFLOW.md)
-
-#

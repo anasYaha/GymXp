@@ -1,4 +1,5 @@
-import type { BranchParamsDto } from "../dto/branches.dto";
+import { z } from "zod";
 
-export const validateBranchParams = (input: BranchParamsDto): BranchParamsDto => input;
-
+export const branchParamsSchema = z.object({
+  id: z.string().trim().min(1)
+});

@@ -1,6 +1,7 @@
-import { createApp } from "./app";
+import { appConfig, createApp } from "./app";
 
 const app = createApp();
 
-console.log("GymXP API scaffold ready", app);
-
+app.listen(appConfig.port, () => {
+  console.log(`GymXP API listening on http://localhost:${appConfig.port}`);
+});

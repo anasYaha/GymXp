@@ -22,7 +22,7 @@ export interface User {
   fullName: string;
   email: string;
   brandId: string;
-  currentBranchId: string;
+  currentBranchId: string | null;
   role: UserRole;
   createdAt: string;
   updatedAt: string;
@@ -48,4 +48,3 @@ export interface XPLog {
   reason: string;
   createdAt: string;
 }
-

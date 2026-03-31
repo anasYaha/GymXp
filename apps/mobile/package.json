@@ -8,6 +8,15 @@
     "build": "echo Mobile build TODO",
     "lint": "echo Mobile lint TODO",
     "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.1.2",
+    "expo": "^53.0.0",
+    "react": "^19.0.0",
+    "react-native": "^0.79.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.12",
+    "typescript": "^5.8.2"
   }
 }
-

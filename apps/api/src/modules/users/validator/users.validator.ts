@@ -1,4 +1,5 @@
-import type { SelectBranchDto } from "../dto/users.dto";
+import { z } from "zod";
 
-export const validateSelectBranchDto = (input: SelectBranchDto): SelectBranchDto => input;
-
+export const selectBranchSchema = z.object({
+  branchId: z.string().trim().min(1)
+});

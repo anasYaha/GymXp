@@ -1,10 +1,26 @@
+import cors from "cors";
+import express from "express";
+
 import { env } from "./core/config/env";
+import { errorMiddleware } from "./core/middleware/error-middleware";
+import { registerRoutes } from "./routes";
 
 export const createApp = () => {
-  return {
-    status: "TODO",
-    port: env.port,
-    message: "Express app factory placeholder. Register middleware and routes here."
-  };
+  const app = express();
+
+  app.use(
+    cors({
+      origin: true,
+      credentials: false
+    })
+  );
+  app.use(express.json());
+  app.use(registerRoutes());
+  app.use(errorMiddleware);
+
+  return app;
 };
 
+export const appConfig = {
+  port: env.port
+};

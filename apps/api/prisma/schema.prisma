@@ -53,8 +53,8 @@ model User {
   passwordHash    String
   brandId         String
   brand           GymBrand         @relation(fields: [brandId], references: [id])
-  currentBranchId String
-  currentBranch   GymBranch        @relation("CurrentBranchUsers", fields: [currentBranchId], references: [id])
+  currentBranchId String?
+  currentBranch   GymBranch?       @relation("CurrentBranchUsers", fields: [currentBranchId], references: [id])
   role            UserRole         @default(MEMBER)
   sessions        WorkoutSession[]
   xpLogs          XPLog[]
@@ -122,4 +122,3 @@ model BranchAnalyticsSnapshot {
   recordedAt         DateTime
   createdAt          DateTime  @default(now())
 }
-

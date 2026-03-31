@@ -1,6 +1,6 @@
 # API Contracts
 
-These are placeholder contracts to keep frontend and backend aligned during scaffold-first development.
+These contracts reflect the implemented Phase 1 MVP flow.
 
 ## `POST /auth/register`
 
@@ -8,9 +8,7 @@ These are placeholder contracts to keep frontend and backend aligned during scaf
 {
   "fullName": "Aymen Ben Salah",
   "email": "aymen@gymxp.demo",
-  "password": "demo-password",
-  "brandId": "brand_gym_city",
-  "branchId": "branch_sousse"
+  "password": "demo12345"
 }
 ```
 
@@ -25,7 +23,7 @@ Response:
     "email": "aymen@gymxp.demo",
     "role": "MEMBER",
     "brandId": "brand_gym_city",
-    "currentBranchId": "branch_sousse"
+    "currentBranchId": null
   }
 }
 ```
@@ -66,7 +64,9 @@ Response matches `register`.
       "brandId": "brand_gym_city",
       "name": "Gym City Sousse",
       "city": "Sousse",
-      "address": "Demo address"
+      "address": "Boulevard du 14 Janvier",
+      "createdAt": "2026-03-29T18:00:00.000Z",
+      "updatedAt": "2026-03-29T18:00:00.000Z"
     }
   ]
 }
@@ -84,7 +84,23 @@ Response:
 
 ```json
 {
-  "currentBranchId": "branch_sousse"
+  "currentBranchId": "branch_sousse",
+  "branch": {
+    "id": "branch_sousse",
+    "name": "Gym City Sousse",
+    "city": "Sousse"
+  },
+  "user": {
+    "id": "user_1",
+    "fullName": "Aymen Ben Salah",
+    "email": "aymen@gymxp.demo",
+    "role": "MEMBER",
+    "brandId": "brand_gym_city",
+    "currentBranchId": "branch_sousse",
+    "createdAt": "2026-03-29T18:00:00.000Z",
+    "updatedAt": "2026-03-29T18:00:00.000Z"
+  },
+  "token": "jwt-with-branch-context"
 }
 ```
 
@@ -92,20 +108,24 @@ Response:
 
 ```json
 {
-  "member": {
-    "firstName": "Aymen"
+  "user": {
+    "id": "u_1",
+    "fullName": "Ali Ben Salah",
+    "email": "ali@example.com"
   },
-  "activeBranch": {
-    "id": "branch_sousse",
-    "name": "Gym City Sousse",
-    "city": "Sousse"
+  "branch": {
+    "id": "branch_tunis",
+    "name": "Gym City Tunis",
+    "city": "Tunis"
   },
-  "xp": 420,
-  "streakDays": 6,
-  "rank": 4,
-  "todayInThisGym": {
-    "activeMembers": 27,
-    "peakWindow": "18:00-20:00"
+  "stats": {
+    "xp": 120,
+    "streak": 3,
+    "rank": 7
+  },
+  "today": {
+    "activeMembers": 14,
+    "topMuscleGroup": "Legs"
   }
 }
 ```
@@ -214,4 +234,3 @@ Response:
   ]
 }
 ```
-
