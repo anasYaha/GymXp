@@ -5,8 +5,21 @@ import { prisma } from "../../src/core/database/prisma";
 
 const demoPassword = "demo12345";
 
+const addHours = (date: Date, hours: number) => {
+  const nextDate = new Date(date);
+  nextDate.setHours(nextDate.getHours() + hours);
+  return nextDate;
+};
+
+const addDays = (date: Date, days: number) => {
+  const nextDate = new Date(date);
+  nextDate.setDate(nextDate.getDate() + days);
+  return nextDate;
+};
+
 const seed = async () => {
   const passwordHash = await bcrypt.hash(demoPassword, 10);
+  const now = new Date();
 
   await prisma.gymBrand.upsert({
     where: {
@@ -102,6 +115,69 @@ const seed = async () => {
       role: UserRole.MEMBER
     }
   });
+
+  const sessionOptions = [
+    {
+      id: "session_tunis_strength",
+      branchId: "branch_tunis",
+      title: "Strength Foundations",
+      description: "A simple guided full-body strength block for members checking in after work.",
+      coachName: "Coach Amir",
+      startsAt: addHours(now, 2),
+      durationMins: 60,
+      muscleGroup: "Full Body"
+    },
+    {
+      id: "session_tunis_legs",
+      branchId: "branch_tunis",
+      title: "Leg Day Express",
+      description: "Quick lower-body session with machines and squat rack stations.",
+      coachName: "Coach Yasmine",
+      startsAt: addHours(now, 5),
+      durationMins: 45,
+      muscleGroup: "Legs"
+    },
+    {
+      id: "session_tunis_hiit",
+      branchId: "branch_tunis",
+      title: "Morning HIIT",
+      description: "High-energy conditioning block for the Tunis branch morning crowd.",
+      coachName: "Coach Mehdi",
+      startsAt: addDays(addHours(now, 25), 0),
+      durationMins: 35,
+      muscleGroup: "Cardio"
+    },
+    {
+      id: "session_sousse_back",
+      branchId: "branch_sousse",
+      title: "Back & Core Builder",
+      description: "Technique-first back and core session designed for regular members.",
+      coachName: "Coach Lina",
+      startsAt: addHours(now, 3),
+      durationMins: 50,
+      muscleGroup: "Back"
+    },
+    {
+      id: "session_sousse_boxfit",
+      branchId: "branch_sousse",
+      title: "BoxFit Circuit",
+      description: "Circuit-based cardio and boxing combinations for the Sousse branch.",
+      coachName: "Coach Rami",
+      startsAt: addHours(now, 6),
+      durationMins: 40,
+      muscleGroup: "Cardio"
+    }
+  ];
+
+  for (const option of sessionOptions) {
+    await prisma.branchSessionOption.upsert({
+      where: {
+        id: option.id
+      },
+      update: option,
+      create: option
+    });
+  }
 };
 
 seed()

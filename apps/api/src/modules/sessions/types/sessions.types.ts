@@ -1,5 +1,4 @@
-export interface SessionQuery {
+export interface SessionsContext {
   userId: string;
-  branchId?: string;
+  branchId?: string | null;
 }
-

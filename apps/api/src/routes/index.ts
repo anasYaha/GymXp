@@ -8,6 +8,8 @@ import { loginSchema, registerSchema } from "../modules/auth/validator/auth.vali
 import { branchesController } from "../modules/branches/controller/branches.controller";
 import { branchParamsSchema } from "../modules/branches/validator/branches.validator";
 import { dashboardController } from "../modules/dashboard/controller/dashboard.controller";
+import { sessionsController } from "../modules/sessions/controller/sessions.controller";
+import { sessionParamsSchema } from "../modules/sessions/validator/sessions.validator";
 import { usersController } from "../modules/users/controller/users.controller";
 import { selectBranchSchema } from "../modules/users/validator/users.validator";
 
@@ -15,7 +17,8 @@ export const routeRegistry = [
   "auth",
   "users",
   "branches",
-  "dashboard"
+  "dashboard",
+  "sessions"
 ] as const;
 
 export const registerRoutes = () => {
@@ -62,6 +65,16 @@ export const registerRoutes = () => {
     asyncHandler(usersController.selectBranch)
   );
   router.get("/dashboard/summary", requireAuth, asyncHandler(dashboardController.summary));
+  router.get("/sessions/available", requireAuth, asyncHandler(sessionsController.listAvailable));
+  router.get("/sessions/mine", requireAuth, asyncHandler(sessionsController.listMine));
+  router.post(
+    "/sessions/:id/check-in",
+    requireAuth,
+    validate({
+      params: sessionParamsSchema
+    }),
+    asyncHandler(sessionsController.checkIn)
+  );
 
   return router;
 };

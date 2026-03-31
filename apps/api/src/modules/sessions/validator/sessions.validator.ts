@@ -1,5 +1,5 @@
-import type { CompleteSessionDto, CreateSessionDto } from "../dto/sessions.dto";
+import { z } from "zod";
 
-export const validateCreateSession = (input: CreateSessionDto): CreateSessionDto => input;
-export const validateCompleteSession = (input: CompleteSessionDto): CompleteSessionDto => input;
-
+export const sessionParamsSchema = z.object({
+  id: z.string().trim().min(1)
+});

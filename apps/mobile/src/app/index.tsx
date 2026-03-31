@@ -1,4 +1,5 @@
 import type { DashboardSummaryResponse } from "@gymxp/shared-types/contracts/dashboard";
+import type { BranchSessionOption } from "@gymxp/shared-types/contracts/sessions";
 import type { User } from "@gymxp/shared-types/entities/brand";
 import type { RegisterRequest } from "@gymxp/shared-types/contracts/auth";
 import type { GymBranch } from "@gymxp/shared-types/entities/brand";
@@ -8,6 +9,7 @@ import { ActivityIndicator, Text, View } from "react-native";
 import { authService } from "../features/auth/auth.service";
 import { branchService } from "../features/branch/branch.service";
 import { getDashboardSummary } from "../features/dashboard/dashboard.service";
+import { checkInToSession, listAvailableSessions } from "../features/session/session.service";
 import { sessionStorage } from "../services/storage/session-storage";
 import { DashboardScreen } from "../screens/dashboard/dashboard-screen";
 import { LoginScreen } from "../screens/auth/login-screen";
@@ -22,8 +24,10 @@ export const MobileAppRoot = () => {
   const [user, setUser] = useState<User | null>(null);
   const [branches, setBranches] = useState<GymBranch[]>([]);
   const [summary, setSummary] = useState<DashboardSummaryResponse | null>(null);
+  const [sessionOptions, setSessionOptions] = useState<BranchSessionOption[]>([]);
   const [booting, setBooting] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [checkingInSessionId, setCheckingInSessionId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const persistSession = async (nextToken: string, nextUser: User) => {
@@ -38,9 +42,14 @@ export const MobileAppRoot = () => {
     setBranches(response.items);
   };
 
-  const loadSummary = async (nextToken: string) => {
-    const nextSummary = await getDashboardSummary(nextToken);
+  const loadDashboardData = async (nextToken: string) => {
+    const [nextSummary, nextSessionOptions] = await Promise.all([
+      getDashboardSummary(nextToken),
+      listAvailableSessions(nextToken)
+    ]);
+
     setSummary(nextSummary);
+    setSessionOptions(nextSessionOptions.items);
   };
 
   useEffect(() => {
@@ -59,7 +68,7 @@ export const MobileAppRoot = () => {
         await loadBranches(storedToken);
 
         if (me.user.currentBranchId) {
-          await loadSummary(storedToken);
+          await loadDashboardData(storedToken);
         }
       } catch {
         await sessionStorage.clear();
@@ -90,6 +99,7 @@ export const MobileAppRoot = () => {
       await persistSession(response.token, response.user);
       await loadBranches(response.token);
       setSummary(null);
+      setSessionOptions([]);
     });
 
   const handleLogin = async (input: { email: string; password: string }) =>
@@ -99,9 +109,10 @@ export const MobileAppRoot = () => {
       await loadBranches(response.token);
 
       if (response.user.currentBranchId) {
-        await loadSummary(response.token);
+        await loadDashboardData(response.token);
       } else {
         setSummary(null);
+        setSessionOptions([]);
       }
     });
 
@@ -113,8 +124,26 @@ export const MobileAppRoot = () => {
 
       const response = await branchService.select(token, branchId);
       await persistSession(response.token, response.user);
-      await loadSummary(response.token);
+      await loadDashboardData(response.token);
     });
+
+  const handleCheckIn = async (sessionId: string) => {
+    if (!token) {
+      throw new Error("Missing session.");
+    }
+
+    setCheckingInSessionId(sessionId);
+    setError(null);
+
+    try {
+      await checkInToSession(token, sessionId);
+      await loadDashboardData(token);
+    } catch (nextError) {
+      setError(nextError instanceof Error ? nextError.message : "Something went wrong.");
+    } finally {
+      setCheckingInSessionId(null);
+    }
+  };
 
   const handleLogout = async () => {
     await sessionStorage.clear();
@@ -122,6 +151,7 @@ export const MobileAppRoot = () => {
     setUser(null);
     setBranches([]);
     setSummary(null);
+    setSessionOptions([]);
     setAuthMode("login");
   };
 
@@ -194,5 +224,16 @@ export const MobileAppRoot = () => {
     );
   }
 
-  return <DashboardScreen onLogout={handleLogout} summary={summary} />;
+  return (
+    <DashboardScreen
+      checkingInSessionId={checkingInSessionId}
+      onCheckIn={handleCheckIn}
+      onLogout={handleLogout}
+      sessionError={error}
+      sessions={sessionOptions}
+      summary={summary}
+    />
+  );
 };
+
+export default MobileAppRoot;

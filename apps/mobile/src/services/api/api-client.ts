@@ -16,7 +16,7 @@ const isApiErrorPayload = (payload: unknown): payload is ApiErrorPayload => {
 };
 
 export const apiClient = {
-  baseUrl: env.process?.env?.EXPO_PUBLIC_API_BASE_URL ?? "http://localhost:4000",
+  baseUrl: env.process?.env?.EXPO_PUBLIC_API_BASE_URL ?? "http://192.168.1.244:4000",
 
   async request<T>(path: string, init?: RequestInit & { token?: string | null }): Promise<T> {
     const headers = new Headers(init?.headers);

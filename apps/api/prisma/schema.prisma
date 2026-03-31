@@ -38,6 +38,8 @@ model GymBranch {
   address            String?
   users              User[]                     @relation("CurrentBranchUsers")
   workoutSessions    WorkoutSession[]
+  sessionOptions     BranchSessionOption[]
+  sessionAttendances SessionAttendance[]
   xpLogs             XPLog[]
   streakSnapshots    StreakSnapshot[]
   leaderboardEntries LeaderboardSnapshot[]
@@ -57,10 +59,43 @@ model User {
   currentBranch   GymBranch?       @relation("CurrentBranchUsers", fields: [currentBranchId], references: [id])
   role            UserRole         @default(MEMBER)
   sessions        WorkoutSession[]
+  sessionAttendances SessionAttendance[]
   xpLogs          XPLog[]
   streaks         StreakSnapshot[]
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
+}
+
+model BranchSessionOption {
+  id           String              @id @default(cuid())
+  branchId     String
+  branch       GymBranch           @relation(fields: [branchId], references: [id])
+  title        String
+  description  String?
+  coachName    String?
+  startsAt     DateTime
+  durationMins Int
+  muscleGroup  String
+  attendances  SessionAttendance[]
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  @@index([branchId, startsAt])
+}
+
+model SessionAttendance {
+  id              String              @id @default(cuid())
+  sessionOptionId String
+  sessionOption   BranchSessionOption @relation(fields: [sessionOptionId], references: [id])
+  userId          String
+  user            User                @relation(fields: [userId], references: [id])
+  branchId        String
+  branch          GymBranch           @relation(fields: [branchId], references: [id])
+  checkedInAt     DateTime            @default(now())
+  createdAt       DateTime            @default(now())
+
+  @@unique([sessionOptionId, userId])
+  @@index([userId, branchId, checkedInAt])
 }
 
 model WorkoutSession {

@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "GymXP",
+    "slug": "gymxp-mobile",
+    "scheme": "gymxp",
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}

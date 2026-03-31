@@ -33,6 +33,16 @@ export class DashboardService {
       throw new HttpError(409, "Select a branch before viewing the dashboard.", "BRANCH_NOT_SELECTED");
     }
 
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const [memberCheckIns, branchCheckInsToday, availableSessions, latestCheckIn] = await Promise.all([
+      dashboardRepository.countMemberCheckIns(user.id, user.currentBranchId),
+      dashboardRepository.countBranchCheckInsSince(user.currentBranchId, startOfToday),
+      dashboardRepository.countAvailableSessionsSince(user.currentBranchId, startOfToday),
+      dashboardRepository.getLatestMemberCheckIn(user.id, user.currentBranchId)
+    ]);
+
     const stats = branchMockStats[user.currentBranchId] ?? {
       xp: 80,
       streak: 1,
@@ -51,11 +61,20 @@ export class DashboardService {
       stats: {
         xp: stats.xp,
         streak: stats.streak,
-        rank: stats.rank
+        rank: stats.rank,
+        checkIns: memberCheckIns
       },
       today: {
         activeMembers: stats.activeMembers,
-        topMuscleGroup: stats.topMuscleGroup
+        topMuscleGroup: stats.topMuscleGroup,
+        checkInsToday: branchCheckInsToday,
+        availableSessions
+      },
+      sessions: {
+        totalCheckIns: memberCheckIns,
+        checkedInToday: !!(latestCheckIn && latestCheckIn.checkedInAt >= startOfToday),
+        lastCheckInTitle: latestCheckIn?.sessionOption.title ?? null,
+        lastCheckInAt: latestCheckIn?.checkedInAt.toISOString() ?? null
       }
     };
   }

@@ -1,6 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
-import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { ZodError } from "zod";
+
+const { JsonWebTokenError, TokenExpiredError } = jwt;
 
 import { sendError } from "../http/response";
 import { HttpError } from "../errors/http-error";
