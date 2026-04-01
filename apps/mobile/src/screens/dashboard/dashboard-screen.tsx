@@ -4,7 +4,9 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { ActiveBranchCard } from "../../components/branch/active-branch-card";
 import { ScreenShell } from "../../components/common/screen-shell";
+import { SectionHeader } from "../../components/common/section-header";
 import { DashboardSummaryCard } from "../../components/dashboard/dashboard-summary-card";
+import { SessionOptionCard } from "../../components/sessions/session-option-card";
 import { themeTokens } from "../../theme/tokens";
 
 interface DashboardScreenProps {
@@ -24,6 +26,19 @@ const formatSessionTime = (value: string) => {
   }).format(new Date(value));
 };
 
+const formatLastCheckIn = (value: string | null) => {
+  if (!value) {
+    return "No session checked in yet";
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(new Date(value));
+};
+
 export const DashboardScreen = ({
   summary,
   sessions,
@@ -35,71 +50,105 @@ export const DashboardScreen = ({
   return (
     <ScreenShell
       title={`Welcome, ${summary.user.fullName}`}
-      subtitle="This summary is branch-specific and reflects today inside your selected gym."
+      subtitle="Your dashboard is tailored to your active branch, with your progress and today's gym activity front and center."
     >
       <ActiveBranchCard name={summary.branch.name} city={summary.branch.city} />
-      <View style={styles.grid}>
-        <DashboardSummaryCard title="XP" value={summary.stats.xp} />
-        <DashboardSummaryCard title="Streak" value={`${summary.stats.streak} days`} />
-        <DashboardSummaryCard title="Rank" value={`#${summary.stats.rank}`} />
-        <DashboardSummaryCard title="Check-ins" value={summary.stats.checkIns} />
+
+      <View style={styles.progressCard}>
+        <SectionHeader
+          eyebrow="Progress"
+          sideLabel="Branch live"
+          subtitle="Momentum builds fastest when you keep showing up. Your current branch activity is reflected below."
+          title="Your training snapshot"
+        />
+        <DashboardSummaryCard
+          highlight
+          subtitle="Keep stacking attendance to climb the leaderboard."
+          title="XP"
+          value={summary.stats.xp}
+        />
+        <View style={styles.statsRow}>
+          <DashboardSummaryCard
+            subtitle="Current attendance habit"
+            title="Streak"
+            value={`${summary.stats.streak} days`}
+          />
+          <DashboardSummaryCard
+            subtitle="Within your branch"
+            title="Rank"
+            value={`#${summary.stats.rank}`}
+          />
+        </View>
+        <DashboardSummaryCard
+          subtitle="Total branch check-ins recorded"
+          title="Check-ins"
+          value={summary.stats.checkIns}
+        />
       </View>
+
       <View style={styles.todayCard}>
-        <Text style={styles.todayTitle}>Today in this gym</Text>
-        <Text style={styles.todayText}>{summary.today.activeMembers} active members</Text>
-        <Text style={styles.todayText}>Top muscle group: {summary.today.topMuscleGroup}</Text>
-        <Text style={styles.todayText}>{summary.today.checkInsToday} check-ins recorded today</Text>
-        <Text style={styles.todayText}>{summary.today.availableSessions} sessions available</Text>
+        <SectionHeader
+          eyebrow="Today in this gym"
+          subtitle={`Top focus: ${summary.today.topMuscleGroup}. ${summary.today.availableSessions} sessions are open for booking and ${summary.today.checkInsToday} check-ins have already been recorded.`}
+          title={`${summary.today.activeMembers} members are active today`}
+        />
+        <View style={styles.todayMetricsRow}>
+          <View style={styles.todayMetric}>
+            <Text style={styles.todayMetricValue}>{summary.today.checkInsToday}</Text>
+            <Text style={styles.todayMetricLabel}>Check-ins today</Text>
+          </View>
+          <View style={styles.todayMetric}>
+            <Text style={styles.todayMetricValue}>{summary.today.availableSessions}</Text>
+            <Text style={styles.todayMetricLabel}>Open sessions</Text>
+          </View>
+        </View>
       </View>
+
       <View style={styles.sessionMetaCard}>
-        <Text style={styles.todayTitle}>Your session activity</Text>
-        <Text style={styles.todayText}>
+        <SectionHeader
+          eyebrow="Attendance"
+          subtitle={
+            summary.sessions.checkedInToday
+              ? "You've already locked in your attendance for today."
+              : "You have not checked in yet today. Pick a session below to keep your streak alive."
+          }
+          title="Your session activity"
+        />
+        <Text style={styles.activityDetail}>
           {summary.sessions.checkedInToday ? "You have checked in today." : "No check-in recorded yet today."}
         </Text>
-        <Text style={styles.todayText}>
-          Last check-in: {summary.sessions.lastCheckInTitle ?? "No session checked in yet"}
+        <Text style={styles.activityDetail}>
+          Last session: {summary.sessions.lastCheckInTitle ?? "No session checked in yet"}
+        </Text>
+        <Text style={styles.activityFootnote}>
+          Last recorded time: {formatLastCheckIn(summary.sessions.lastCheckInAt)}
         </Text>
       </View>
+
       <View style={styles.sessionsCard}>
-        <Text style={styles.sessionsTitle}>Available at your branch</Text>
-        <Text style={styles.sessionsSubtitle}>
-          Pick one option and mark attendance for your active branch.
-        </Text>
+        <SectionHeader
+          eyebrow="Available classes"
+          sideLabel={`${sessions.length} live`}
+          subtitle="Scan the next sessions at your branch and mark attendance without leaving the dashboard."
+          title="Sessions at your branch"
+        />
         {sessionError ? <Text style={styles.errorText}>{sessionError}</Text> : null}
         {sessions.length === 0 ? (
           <Text style={styles.emptyText}>No upcoming sessions are available right now for this branch.</Text>
         ) : null}
-        {sessions.map((session) => {
-          const disabled = session.checkedIn || checkingInSessionId === session.id;
-
-          return (
-            <View key={session.id} style={styles.sessionItem}>
-              <View style={styles.sessionCopy}>
-                <Text style={styles.sessionName}>{session.title}</Text>
-                <Text style={styles.sessionDetail}>
-                  {session.muscleGroup} · {session.durationMins} mins
-                </Text>
-                <Text style={styles.sessionDetail}>{formatSessionTime(session.startsAt)}</Text>
-                {session.coachName ? (
-                  <Text style={styles.sessionDetail}>Coach: {session.coachName}</Text>
-                ) : null}
-                {session.description ? <Text style={styles.sessionDescription}>{session.description}</Text> : null}
-              </View>
-              <Pressable
-                disabled={disabled}
-                onPress={() => {
-                  void onCheckIn(session.id);
-                }}
-                style={[styles.checkInButton, disabled ? styles.checkInButtonDisabled : null]}
-              >
-                <Text style={styles.checkInButtonText}>
-                  {session.checkedIn ? "Checked in" : checkingInSessionId === session.id ? "Checking in..." : "Check in"}
-                </Text>
-              </Pressable>
-            </View>
-          );
-        })}
+        {sessions.map((session) => (
+          <SessionOptionCard
+            key={session.id}
+            loading={checkingInSessionId === session.id}
+            onCheckIn={(sessionId) => {
+              void onCheckIn(sessionId);
+            }}
+            session={session}
+            timingLabel={formatSessionTime(session.startsAt)}
+          />
+        ))}
       </View>
+
       <Pressable onPress={onLogout} style={styles.logoutButton}>
         <Text style={styles.logoutText}>Log out</Text>
       </Pressable>
@@ -108,102 +157,86 @@ export const DashboardScreen = ({
 };
 
 const styles = StyleSheet.create({
-  grid: {
+  progressCard: {
+    backgroundColor: themeTokens.surfaceElevated,
+    borderRadius: 26,
+    borderWidth: 1,
+    borderColor: themeTokens.border,
+    padding: 18,
+    gap: 14
+  },
+  statsRow: {
+    flexDirection: "row",
     gap: 12
   },
   todayCard: {
-    backgroundColor: "#fff6df",
-    borderRadius: 18,
+    backgroundColor: themeTokens.accentSoft,
+    borderRadius: 24,
     padding: 18,
-    gap: 8
+    gap: 16
   },
-  sessionMetaCard: {
-    backgroundColor: "#edf6f3",
+  todayMetricsRow: {
+    flexDirection: "row",
+    gap: 12
+  },
+  todayMetric: {
+    flex: 1,
+    backgroundColor: "rgba(255,255,255,0.6)",
     borderRadius: 18,
-    padding: 18,
-    gap: 8,
-    borderWidth: 1,
-    borderColor: "#d8e4df"
-  },
-  todayTitle: {
-    color: themeTokens.text,
-    fontSize: 18,
-    fontWeight: "700"
-  },
-  todayText: {
-    color: "#4d655f",
-    fontSize: 15
-  },
-  sessionsCard: {
-    backgroundColor: "#ffffff",
-    borderRadius: 18,
-    padding: 18,
-    gap: 14,
-    borderWidth: 1,
-    borderColor: "#d8e4df"
-  },
-  sessionsTitle: {
-    color: themeTokens.text,
-    fontSize: 18,
-    fontWeight: "700"
-  },
-  sessionsSubtitle: {
-    color: "#55736d",
-    fontSize: 14,
-    lineHeight: 20
-  },
-  sessionItem: {
-    gap: 12,
-    borderTopWidth: 1,
-    borderTopColor: "#edf2ef",
-    paddingTop: 14
-  },
-  sessionCopy: {
+    padding: 14,
     gap: 4
   },
-  sessionName: {
+  todayMetricValue: {
     color: themeTokens.text,
-    fontSize: 16,
-    fontWeight: "700"
+    fontSize: 24,
+    fontWeight: "800"
   },
-  sessionDetail: {
-    color: "#4d655f",
+  todayMetricLabel: {
+    color: "#7A6A46",
+    fontSize: 13,
+    fontWeight: "600"
+  },
+  sessionMetaCard: {
+    backgroundColor: "#EDF6F3",
+    borderRadius: 24,
+    padding: 18,
+    gap: 10,
+    borderWidth: 1,
+    borderColor: themeTokens.border
+  },
+  activityDetail: {
+    color: themeTokens.text,
+    fontSize: 15,
+    fontWeight: "600"
+  },
+  activityFootnote: {
+    color: themeTokens.textMuted,
     fontSize: 14
   },
-  sessionDescription: {
-    color: "#55736d",
-    fontSize: 14,
-    lineHeight: 20
-  },
-  checkInButton: {
-    alignItems: "center",
-    backgroundColor: themeTokens.brandPrimary,
-    borderRadius: 14,
-    paddingVertical: 12
-  },
-  checkInButtonDisabled: {
-    backgroundColor: "#7b9892"
-  },
-  checkInButtonText: {
-    color: "#ffffff",
-    fontSize: 14,
-    fontWeight: "700"
+  sessionsCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 18,
+    gap: 16,
+    borderWidth: 1,
+    borderColor: themeTokens.border
   },
   errorText: {
-    color: "#b42318",
+    color: "#B42318",
     fontSize: 14,
     fontWeight: "600"
   },
   emptyText: {
-    color: "#55736d",
+    color: themeTokens.textMuted,
     fontSize: 14
   },
   logoutButton: {
     alignItems: "center",
-    paddingVertical: 10
+    paddingVertical: 8
   },
   logoutText: {
     color: themeTokens.brandPrimary,
-    fontWeight: "700"
+    fontWeight: "700",
+    fontSize: 15
   }
 });

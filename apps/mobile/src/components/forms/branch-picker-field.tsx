@@ -25,7 +25,14 @@ export const BranchPickerField = ({
             onPress={() => onSelect(branch.id)}
             style={[styles.option, selected ? styles.selected : null]}
           >
-            <Text style={styles.name}>{branch.name}</Text>
+            <View style={styles.headerRow}>
+              <Text style={styles.name}>{branch.name}</Text>
+              {selected ? (
+                <View style={styles.selectedBadge}>
+                  <Text style={styles.selectedBadgeText}>Selected</Text>
+                </View>
+              ) : null}
+            </View>
             <Text style={styles.meta}>
               {branch.city}
               {branch.address ? ` • ${branch.address}` : ""}
@@ -43,23 +50,42 @@ const styles = StyleSheet.create({
   },
   option: {
     backgroundColor: "#ffffff",
-    borderRadius: 16,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#d8e4df",
-    padding: 16,
-    gap: 4
+    borderColor: themeTokens.border,
+    padding: 18,
+    gap: 8
   },
   selected: {
     borderColor: themeTokens.brandPrimary,
-    backgroundColor: "#ebf4f2"
+    backgroundColor: "#EBF4F2"
+  },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 12
   },
   name: {
     color: themeTokens.text,
     fontSize: 17,
-    fontWeight: "700"
+    fontWeight: "800",
+    flex: 1
   },
   meta: {
-    color: "#55736d",
-    fontSize: 14
+    color: themeTokens.textMuted,
+    fontSize: 14,
+    lineHeight: 20
+  },
+  selectedBadge: {
+    backgroundColor: themeTokens.brandPrimary,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 5
+  },
+  selectedBadgeText: {
+    color: "#ffffff",
+    fontSize: 11,
+    fontWeight: "700"
   }
 });

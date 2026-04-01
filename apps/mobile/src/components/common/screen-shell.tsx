@@ -13,6 +13,9 @@ export const ScreenShell = ({ children, title, subtitle }: ScreenShellProps) => 
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
+          <View style={styles.kicker}>
+            <Text style={styles.kickerText}>GymXP Member</Text>
+          </View>
           <Text style={styles.title}>{title}</Text>
           {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         </View>
@@ -29,19 +32,38 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
-    gap: 16
+    paddingTop: 18,
+    paddingBottom: 32,
+    gap: 18
   },
   header: {
-    gap: 8
+    gap: 10,
+    marginBottom: 4
+  },
+  kicker: {
+    alignSelf: "flex-start",
+    backgroundColor: themeTokens.brandPrimarySoft,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: themeTokens.border,
+    paddingHorizontal: 12,
+    paddingVertical: 6
+  },
+  kickerText: {
+    color: themeTokens.brandPrimaryStrong,
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 0.9,
+    textTransform: "uppercase"
   },
   title: {
     color: themeTokens.text,
-    fontSize: 30,
-    fontWeight: "700"
+    fontSize: 32,
+    lineHeight: 38,
+    fontWeight: "800"
   },
   subtitle: {
-    color: "#44615c",
+    color: themeTokens.textMuted,
     fontSize: 15,
     lineHeight: 22
   }

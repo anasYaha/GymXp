@@ -3,8 +3,12 @@
     "name": "GymXP",
     "slug": "gymxp-mobile",
     "scheme": "gymxp",
+    "newArchEnabled": false,
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "android": {
+      "package": "com.anonymous.gymxpmobile"
+    }
   }
 }

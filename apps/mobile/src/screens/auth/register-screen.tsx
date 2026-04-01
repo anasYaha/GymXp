@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
+import { PrimaryButton } from "../../components/common/primary-button";
 import { ScreenShell } from "../../components/common/screen-shell";
 import { themeTokens } from "../../theme/tokens";
 
@@ -23,72 +24,86 @@ export const RegisterScreen = ({
 
   return (
     <ScreenShell
-      title="Create Your Member Account"
-      subtitle="For this MVP demo, all signups belong to the Gym City brand and choose their branch after registration."
+      title="Create your account"
+      subtitle="Join the GymXP member app, then choose your branch to unlock branch-specific sessions, XP, and streak tracking."
     >
-      <View style={styles.form}>
-        <TextInput onChangeText={setFullName} placeholder="Full name" style={styles.input} value={fullName} />
-        <TextInput
-          autoCapitalize="none"
-          keyboardType="email-address"
-          onChangeText={setEmail}
-          placeholder="Email"
-          style={styles.input}
-          value={email}
-        />
-        <TextInput
-          onChangeText={setPassword}
-          placeholder="Password"
-          secureTextEntry
-          style={styles.input}
-          value={password}
-        />
+      <View style={styles.formCard}>
+        <View style={styles.field}>
+          <Text style={styles.fieldLabel}>Full name</Text>
+          <TextInput
+            onChangeText={setFullName}
+            placeholder="Full name"
+            placeholderTextColor={themeTokens.textSoft}
+            style={styles.input}
+            value={fullName}
+          />
+        </View>
+        <View style={styles.field}>
+          <Text style={styles.fieldLabel}>Email</Text>
+          <TextInput
+            autoCapitalize="none"
+            keyboardType="email-address"
+            onChangeText={setEmail}
+            placeholder="Email"
+            placeholderTextColor={themeTokens.textSoft}
+            style={styles.input}
+            value={email}
+          />
+        </View>
+        <View style={styles.field}>
+          <Text style={styles.fieldLabel}>Password</Text>
+          <TextInput
+            onChangeText={setPassword}
+            placeholder="Password"
+            placeholderTextColor={themeTokens.textSoft}
+            secureTextEntry
+            style={styles.input}
+            value={password}
+          />
+        </View>
         {error ? <Text style={styles.error}>{error}</Text> : null}
-        <Pressable
-          disabled={loading}
+        <PrimaryButton
+          label="Register"
+          loading={loading}
           onPress={() => onRegister({ fullName, email, password })}
-          style={styles.primaryButton}
-        >
-          {loading ? (
-            <ActivityIndicator color="#ffffff" />
-          ) : (
-            <Text style={styles.primaryText}>Register</Text>
-          )}
-        </Pressable>
-        <Pressable onPress={onShowLogin} style={styles.secondaryButton}>
-          <Text style={styles.secondaryText}>Back to login</Text>
-        </Pressable>
+        />
       </View>
+      <Pressable onPress={onShowLogin} style={styles.secondaryButton}>
+        <Text style={styles.secondaryText}>Back to login</Text>
+      </Pressable>
     </ScreenShell>
   );
 };
 
 const styles = StyleSheet.create({
-  form: {
-    gap: 12
+  formCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: themeTokens.border,
+    padding: 18,
+    gap: 14
+  },
+  field: {
+    gap: 8
+  },
+  fieldLabel: {
+    color: themeTokens.text,
+    fontSize: 13,
+    fontWeight: "700"
   },
   input: {
-    backgroundColor: "#ffffff",
-    borderRadius: 14,
+    backgroundColor: "#F9FBFA",
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#d8e4df",
+    borderColor: themeTokens.border,
     paddingHorizontal: 16,
     paddingVertical: 14
   },
   error: {
-    color: "#a33434"
-  },
-  primaryButton: {
-    backgroundColor: themeTokens.brandPrimary,
-    borderRadius: 14,
-    minHeight: 52,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  primaryText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "700"
+    color: themeTokens.danger,
+    fontSize: 14,
+    fontWeight: "600"
   },
   secondaryButton: {
     alignItems: "center",

@@ -1,5 +1,8 @@
 export const memberRoutes = [
   "login",
+  "onboarding-profile-info",
+  "onboarding-fitness-info",
+  "onboarding-avatar-setup",
   "onboarding-branch",
   "dashboard-home",
   "session-create",
@@ -7,4 +10,3 @@ export const memberRoutes = [
   "profile",
   "settings"
 ] as const;
-
