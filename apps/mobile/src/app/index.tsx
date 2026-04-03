@@ -1,158 +1,272 @@
 import type { DashboardSummaryResponse } from "@gymxp/shared-types/contracts/dashboard";
-import type { BranchSessionOption } from "@gymxp/shared-types/contracts/sessions";
+import type { MemberSession } from "@gymxp/shared-types/contracts/sessions";
 import type { User } from "@gymxp/shared-types/entities/brand";
 import type { RegisterRequest } from "@gymxp/shared-types/contracts/auth";
-import type { GymBranch } from "@gymxp/shared-types/entities/brand";
-import { useEffect, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
+import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 
 import { authService } from "../features/auth/auth.service";
-import { branchService } from "../features/branch/branch.service";
+import { setAuthStore } from "../features/auth/auth.store";
 import { getDashboardSummary } from "../features/dashboard/dashboard.service";
 import { checkInToSession, listAvailableSessions } from "../features/session/session.service";
-import { sessionStorage } from "../services/storage/session-storage";
 import { DashboardScreen } from "../screens/dashboard/dashboard-screen";
 import { LoginScreen } from "../screens/auth/login-screen";
 import { RegisterScreen } from "../screens/auth/register-screen";
-import { BranchSelectionScreen } from "../screens/onboarding/branch-selection-screen";
 
 type AuthMode = "login" | "register";
+
+const logAuth = (event: string, data?: Record<string, unknown>) => {
+  if (__DEV__) {
+    console.info(`[auth] ${event}`, data ?? {});
+  }
+};
+
+const getErrorMessage = (error: unknown, fallback = "Something went wrong.") => {
+  return error instanceof Error && error.message.trim() ? error.message : fallback;
+};
 
 export const MobileAppRoot = () => {
   const [authMode, setAuthMode] = useState<AuthMode>("login");
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [branches, setBranches] = useState<GymBranch[]>([]);
   const [summary, setSummary] = useState<DashboardSummaryResponse | null>(null);
-  const [sessionOptions, setSessionOptions] = useState<BranchSessionOption[]>([]);
+  const [sessionOptions, setSessionOptions] = useState<MemberSession[]>([]);
   const [booting, setBooting] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [checkingInSessionId, setCheckingInSessionId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const submittingRef = useRef(false);
 
-  const persistSession = async (nextToken: string, nextUser: User) => {
+  const clearAuthenticatedState = () => {
+    setToken(null);
+    setUser(null);
+    setSummary(null);
+    setSessionOptions([]);
+    setAuthStore({
+      token: null,
+      user: null,
+      status: "guest",
+      initialized: true
+    });
+  };
+
+  const applyAuthenticatedState = (nextToken: string, nextUser: User) => {
     setToken(nextToken);
     setUser(nextUser);
-    await sessionStorage.saveToken(nextToken);
-    await sessionStorage.saveUser(nextUser);
+    setAuthStore({
+      token: nextToken,
+      user: nextUser,
+      status: "authenticated",
+      initialized: true
+    });
+
+    logAuth("session-ready", {
+      userId: nextUser.id
+    });
   };
 
-  const loadBranches = async (nextToken: string) => {
-    const response = await branchService.list(nextToken);
-    setBranches(response.items);
-  };
-
-  const loadDashboardData = async (nextToken: string) => {
-    const [nextSummary, nextSessionOptions] = await Promise.all([
-      getDashboardSummary(nextToken),
-      listAvailableSessions(nextToken)
+  const loadMemberData = async (currentUser: User) => {
+    const [nextSummary, nextSessions] = await Promise.all([
+      getDashboardSummary(currentUser),
+      listAvailableSessions()
     ]);
 
     setSummary(nextSummary);
-    setSessionOptions(nextSessionOptions.items);
+    setSessionOptions(nextSessions.items);
+  };
+
+  const syncSession = async (session: Session | null, options?: { preloadedUser?: User | null }) => {
+    if (!session) {
+      clearAuthenticatedState();
+      return;
+    }
+
+    setError(null);
+    setNotice(null);
+    setSummary(null);
+    setSessionOptions([]);
+
+    const hydrated = options?.preloadedUser
+      ? {
+          token: session.access_token,
+          user: options.preloadedUser
+        }
+      : await authService.hydrateSession(session);
+
+    applyAuthenticatedState(hydrated.token, hydrated.user);
+    await loadMemberData(hydrated.user);
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     const bootstrap = async () => {
       try {
-        const storedToken = await sessionStorage.getToken();
-        const storedUser = await sessionStorage.getUser<User>();
+        setAuthStore({
+          token: null,
+          user: null,
+          status: "booting",
+          initialized: false
+        });
 
-        if (!storedToken || !storedUser) {
-          setBooting(false);
+        const existingSession = await authService.getSession();
+
+        if (!isMounted) {
           return;
         }
 
-        const me = await authService.me(storedToken);
-        await persistSession(storedToken, me.user);
-        await loadBranches(storedToken);
-
-        if (me.user.currentBranchId) {
-          await loadDashboardData(storedToken);
+        if (existingSession?.user) {
+          logAuth("bootstrap-start", {
+            userId: existingSession.user.id
+          });
         }
-      } catch {
-        await sessionStorage.clear();
+
+        await syncSession(existingSession);
+      } catch (nextError) {
+        if (!isMounted) {
+          return;
+        }
+
+        clearAuthenticatedState();
+        setError(getErrorMessage(nextError, "Unable to restore your GymXP session."));
       } finally {
-        setBooting(false);
+        if (isMounted) {
+          setBooting(false);
+        }
       }
     };
 
+    const {
+      data: { subscription }
+    } = authService.onAuthStateChange((event, nextSession) => {
+      if (!isMounted) {
+        return;
+      }
+
+      logAuth("auth-state-change", {
+        event,
+        hasSession: Boolean(nextSession)
+      });
+
+      void syncSession(nextSession).catch((nextError) => {
+        if (isMounted) {
+          setError(getErrorMessage(nextError, "Unable to refresh your GymXP data."));
+        }
+      }).finally(() => {
+        if (isMounted) {
+          setBooting(false);
+        }
+      });
+    });
+
     void bootstrap();
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const withSubmit = async (callback: () => Promise<void>) => {
+    if (submittingRef.current) {
+      return;
+    }
+
+    submittingRef.current = true;
     setSubmitting(true);
     setError(null);
+    setNotice(null);
 
     try {
       await callback();
     } catch (nextError) {
-      setError(nextError instanceof Error ? nextError.message : "Something went wrong.");
+      const message = getErrorMessage(nextError);
+      logAuth("submit-failed", {
+        message
+      });
+      setError(message);
     } finally {
+      submittingRef.current = false;
       setSubmitting(false);
     }
   };
 
   const handleRegister = async (input: RegisterRequest) =>
     withSubmit(async () => {
-      const response = await authService.register(input);
-      await persistSession(response.token, response.user);
-      await loadBranches(response.token);
-      setSummary(null);
-      setSessionOptions([]);
+      logAuth("register-submit", {
+        email: input.email
+      });
+
+      const response = await authService.signUp(input);
+
+      if (response.requiresEmailConfirmation || !response.session || !response.user) {
+        setAuthMode("login");
+        setNotice("Account created. Check your email for the confirmation link before signing in.");
+        return;
+      }
+
+      await syncSession(response.session, {
+        preloadedUser: response.user
+      });
+
+      logAuth("register-success", {
+        userId: response.user.id
+      });
     });
 
   const handleLogin = async (input: { email: string; password: string }) =>
     withSubmit(async () => {
+      logAuth("login-submit", {
+        email: input.email
+      });
+
       const response = await authService.login(input);
-      await persistSession(response.token, response.user);
-      await loadBranches(response.token);
+      await syncSession(response.session, {
+        preloadedUser: response.user
+      });
 
-      if (response.user.currentBranchId) {
-        await loadDashboardData(response.token);
-      } else {
-        setSummary(null);
-        setSessionOptions([]);
-      }
-    });
-
-  const handleSelectBranch = async (branchId: string) =>
-    withSubmit(async () => {
-      if (!token) {
-        throw new Error("Missing session.");
-      }
-
-      const response = await branchService.select(token, branchId);
-      await persistSession(response.token, response.user);
-      await loadDashboardData(response.token);
+      logAuth("login-success", {
+        userId: response.user.id
+      });
     });
 
   const handleCheckIn = async (sessionId: string) => {
-    if (!token) {
-      throw new Error("Missing session.");
+    if (!user) {
+      throw new Error("Missing session user.");
     }
 
     setCheckingInSessionId(sessionId);
     setError(null);
+    setNotice(null);
 
     try {
-      await checkInToSession(token, sessionId);
-      await loadDashboardData(token);
+      const result = await checkInToSession(sessionId);
+      await loadMemberData(user);
+
+      setNotice(
+        result.xpAwarded > 0
+          ? `Checked in successfully. +${result.xpAwarded} XP added.`
+          : "You were already checked in to that session."
+      );
     } catch (nextError) {
-      setError(nextError instanceof Error ? nextError.message : "Something went wrong.");
+      setError(getErrorMessage(nextError));
     } finally {
       setCheckingInSessionId(null);
     }
   };
 
   const handleLogout = async () => {
-    await sessionStorage.clear();
-    setToken(null);
-    setUser(null);
-    setBranches([]);
-    setSummary(null);
-    setSessionOptions([]);
-    setAuthMode("login");
+    setError(null);
+    setNotice(null);
+
+    try {
+      await authService.logout();
+    } finally {
+      clearAuthenticatedState();
+      setAuthMode("login");
+    }
   };
 
   if (booting) {
@@ -177,9 +291,15 @@ export const MobileAppRoot = () => {
       <LoginScreen
         error={error}
         loading={submitting}
+        notice={notice}
         onLogin={handleLogin}
         onShowRegister={() => {
+          if (submittingRef.current) {
+            return;
+          }
+
           setError(null);
+          setNotice(null);
           setAuthMode("register");
         }}
       />
@@ -187,22 +307,17 @@ export const MobileAppRoot = () => {
       <RegisterScreen
         error={error}
         loading={submitting}
+        notice={notice}
         onRegister={handleRegister}
         onShowLogin={() => {
+          if (submittingRef.current) {
+            return;
+          }
+
           setError(null);
+          setNotice(null);
           setAuthMode("login");
         }}
-      />
-    );
-  }
-
-  if (!user.currentBranchId) {
-    return (
-      <BranchSelectionScreen
-        branches={branches}
-        error={error}
-        loading={submitting}
-        onSubmit={handleSelectBranch}
       />
     );
   }
@@ -229,7 +344,7 @@ export const MobileAppRoot = () => {
       checkingInSessionId={checkingInSessionId}
       onCheckIn={handleCheckIn}
       onLogout={handleLogout}
-      sessionError={error}
+      sessionError={error ?? notice}
       sessions={sessionOptions}
       summary={summary}
     />

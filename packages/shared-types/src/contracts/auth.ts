@@ -9,7 +9,6 @@ export interface RegisterRequest {
   fullName: string;
   email: string;
   password: string;
-  brandId?: string;
 }
 
 export interface LoginRequest {

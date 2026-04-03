@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
+import { AuthModeLink } from "../../components/auth/auth-mode-link";
+import { AuthTextField } from "../../components/auth/auth-text-field";
 import { PrimaryButton } from "../../components/common/primary-button";
 import { ScreenShell } from "../../components/common/screen-shell";
 import { themeTokens } from "../../theme/tokens";
@@ -10,13 +12,15 @@ interface RegisterScreenProps {
   onShowLogin: () => void;
   loading: boolean;
   error: string | null;
+  notice: string | null;
 }
 
 export const RegisterScreen = ({
   onRegister,
   onShowLogin,
   loading,
-  error
+  error,
+  notice
 }: RegisterScreenProps) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,52 +29,43 @@ export const RegisterScreen = ({
   return (
     <ScreenShell
       title="Create your account"
-      subtitle="Join the GymXP member app, then choose your branch to unlock branch-specific sessions, XP, and streak tracking."
+      subtitle="Join GymXP to unlock your sessions, XP, and streak tracking."
     >
       <View style={styles.formCard}>
-        <View style={styles.field}>
-          <Text style={styles.fieldLabel}>Full name</Text>
-          <TextInput
-            onChangeText={setFullName}
-            placeholder="Full name"
-            placeholderTextColor={themeTokens.textSoft}
-            style={styles.input}
-            value={fullName}
-          />
-        </View>
-        <View style={styles.field}>
-          <Text style={styles.fieldLabel}>Email</Text>
-          <TextInput
-            autoCapitalize="none"
-            keyboardType="email-address"
-            onChangeText={setEmail}
-            placeholder="Email"
-            placeholderTextColor={themeTokens.textSoft}
-            style={styles.input}
-            value={email}
-          />
-        </View>
-        <View style={styles.field}>
-          <Text style={styles.fieldLabel}>Password</Text>
-          <TextInput
-            onChangeText={setPassword}
-            placeholder="Password"
-            placeholderTextColor={themeTokens.textSoft}
-            secureTextEntry
-            style={styles.input}
-            value={password}
-          />
-        </View>
+        <AuthTextField
+          autoCapitalize="words"
+          label="Full name"
+          onChangeText={setFullName}
+          placeholder="Full name"
+          value={fullName}
+        />
+        <AuthTextField
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
+          label="Email"
+          onChangeText={setEmail}
+          placeholder="Email"
+          value={email}
+        />
+        <AuthTextField
+          autoCapitalize="none"
+          autoCorrect={false}
+          label="Password"
+          onChangeText={setPassword}
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+        />
         {error ? <Text style={styles.error}>{error}</Text> : null}
+        {notice ? <Text style={styles.notice}>{notice}</Text> : null}
         <PrimaryButton
           label="Register"
           loading={loading}
           onPress={() => onRegister({ fullName, email, password })}
         />
       </View>
-      <Pressable onPress={onShowLogin} style={styles.secondaryButton}>
-        <Text style={styles.secondaryText}>Back to login</Text>
-      </Pressable>
+      <AuthModeLink disabled={loading} label="Back to login" onPress={onShowLogin} />
     </ScreenShell>
   );
 };
@@ -84,34 +79,14 @@ const styles = StyleSheet.create({
     padding: 18,
     gap: 14
   },
-  field: {
-    gap: 8
-  },
-  fieldLabel: {
-    color: themeTokens.text,
-    fontSize: 13,
-    fontWeight: "700"
-  },
-  input: {
-    backgroundColor: "#F9FBFA",
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: themeTokens.border,
-    paddingHorizontal: 16,
-    paddingVertical: 14
-  },
   error: {
     color: themeTokens.danger,
     fontSize: 14,
     fontWeight: "600"
   },
-  secondaryButton: {
-    alignItems: "center",
-    paddingVertical: 12
-  },
-  secondaryText: {
+  notice: {
     color: themeTokens.brandPrimary,
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "600"
   }
 });

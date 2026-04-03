@@ -1,29 +1,25 @@
-export interface BranchSessionOption {
+export interface MemberSession {
   id: string;
-  branchId: string;
   title: string;
   description?: string | null;
   coachName?: string | null;
   startsAt: string;
-  durationMins: number;
-  muscleGroup: string;
+  endsAt: string;
+  capacity: number | null;
   checkedIn: boolean;
   createdAt: string;
-  updatedAt: string;
 }
 
 export interface SessionAttendance {
   id: string;
   userId: string;
-  branchId: string;
-  sessionOptionId: string;
+  sessionId: string;
   checkedInAt: string;
-  createdAt: string;
-  sessionOption: Omit<BranchSessionOption, "checkedIn">;
+  session: Omit<MemberSession, "checkedIn">;
 }
 
 export interface SessionListResponse {
-  items: BranchSessionOption[];
+  items: MemberSession[];
 }
 
 export interface SessionAttendanceListResponse {
@@ -32,4 +28,5 @@ export interface SessionAttendanceListResponse {
 
 export interface SessionCheckInResponse {
   attendance: SessionAttendance;
+  xpAwarded: number;
 }

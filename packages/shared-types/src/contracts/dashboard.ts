@@ -4,7 +4,7 @@ export interface DashboardSummaryResponse {
     fullName: string;
     email: string;
   };
-  branch: {
+  gym: {
     id: string;
     name: string;
     city: string;
@@ -12,12 +12,11 @@ export interface DashboardSummaryResponse {
   stats: {
     xp: number;
     streak: number;
-    rank: number;
     checkIns: number;
   };
   today: {
     activeMembers: number;
-    topMuscleGroup: string;
+    featuredSessionTitle: string | null;
     checkInsToday: number;
     availableSessions: number;
   };

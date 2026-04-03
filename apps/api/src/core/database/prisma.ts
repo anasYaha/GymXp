@@ -1,8 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import prismaClientPackage from "@prisma/client";
+
+type PrismaClientType = InstanceType<(typeof prismaClientPackage)["PrismaClient"]>;
+
+const { PrismaClient } = prismaClientPackage;
 
 declare global {
   // eslint-disable-next-line no-var
-  var __gymxpPrisma: PrismaClient | undefined;
+  var __gymxpPrisma: PrismaClientType | undefined;
 }
 
 export const prisma =

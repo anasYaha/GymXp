@@ -1,10 +1,11 @@
 import type { RequestHandler } from "express";
-import { UserRole } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
 import { env } from "../config/env";
 import { HttpError } from "../errors/http-error";
 import type { AuthTokenPayload } from "../../modules/auth/types/auth.types";
+
+const adminRoles = new Set(["BRANCH_ADMIN", "BRAND_OWNER", "PLATFORM_ADMIN"]);
 
 const getBearerToken = (authorizationHeader?: string) => {
   if (!authorizationHeader) {
@@ -43,11 +44,7 @@ export const requireAdmin: RequestHandler = (request, _response, next) => {
     return next(new HttpError(401, "Authentication required.", "UNAUTHORIZED"));
   }
 
-  if (
-    request.context.role !== UserRole.BRANCH_ADMIN &&
-    request.context.role !== UserRole.BRAND_OWNER &&
-    request.context.role !== UserRole.PLATFORM_ADMIN
-  ) {
+  if (!adminRoles.has(request.context.role)) {
     return next(new HttpError(403, "Admin access required.", "FORBIDDEN"));
   }
 

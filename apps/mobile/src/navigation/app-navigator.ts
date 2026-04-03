@@ -3,7 +3,6 @@ export const memberRoutes = [
   "onboarding-profile-info",
   "onboarding-fitness-info",
   "onboarding-avatar-setup",
-  "onboarding-branch",
   "dashboard-home",
   "session-create",
   "leaderboard",

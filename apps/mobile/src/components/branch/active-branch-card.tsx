@@ -11,7 +11,7 @@ export const ActiveBranchCard = ({ name, city }: ActiveBranchCardProps) => {
   return (
     <View style={styles.card}>
       <View style={styles.topRow}>
-        <Text style={styles.label}>Active Branch</Text>
+        <Text style={styles.label}>Active Gym</Text>
         <View style={styles.pill}>
           <Text style={styles.pillText}>{city}</Text>
         </View>

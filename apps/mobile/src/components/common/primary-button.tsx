@@ -24,6 +24,7 @@ export const PrimaryButton = ({
 
   return (
     <Pressable
+      accessibilityState={{ disabled: isDisabled, busy: loading }}
       disabled={isDisabled}
       onPress={onPress}
       style={[

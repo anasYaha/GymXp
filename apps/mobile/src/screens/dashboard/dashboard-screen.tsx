@@ -1,5 +1,5 @@
 import type { DashboardSummaryResponse } from "@gymxp/shared-types/contracts/dashboard";
-import type { BranchSessionOption } from "@gymxp/shared-types/contracts/sessions";
+import type { MemberSession } from "@gymxp/shared-types/contracts/sessions";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { ActiveBranchCard } from "../../components/branch/active-branch-card";
@@ -11,7 +11,7 @@ import { themeTokens } from "../../theme/tokens";
 
 interface DashboardScreenProps {
   summary: DashboardSummaryResponse;
-  sessions: BranchSessionOption[];
+  sessions: MemberSession[];
   sessionError?: string | null;
   checkingInSessionId?: string | null;
   onCheckIn: (sessionId: string) => Promise<void>;
@@ -50,20 +50,20 @@ export const DashboardScreen = ({
   return (
     <ScreenShell
       title={`Welcome, ${summary.user.fullName}`}
-      subtitle="Your dashboard is tailored to your active branch, with your progress and today's gym activity front and center."
+      subtitle="Your dashboard now reflects live member data from Supabase."
     >
-      <ActiveBranchCard name={summary.branch.name} city={summary.branch.city} />
+      <ActiveBranchCard name={summary.gym.name} city={summary.gym.city} />
 
       <View style={styles.progressCard}>
         <SectionHeader
           eyebrow="Progress"
-          sideLabel="Branch live"
-          subtitle="Momentum builds fastest when you keep showing up. Your current branch activity is reflected below."
+          sideLabel="Live data"
+          subtitle="Your XP, streak, and attendance update from your real check-ins."
           title="Your training snapshot"
         />
         <DashboardSummaryCard
           highlight
-          subtitle="Keep stacking attendance to climb the leaderboard."
+          subtitle="Earn more by checking into upcoming sessions."
           title="XP"
           value={summary.stats.xp}
         />
@@ -74,23 +74,22 @@ export const DashboardScreen = ({
             value={`${summary.stats.streak} days`}
           />
           <DashboardSummaryCard
-            subtitle="Within your branch"
-            title="Rank"
-            value={`#${summary.stats.rank}`}
+            subtitle="Total sessions you've attended"
+            title="Check-ins"
+            value={summary.stats.checkIns}
           />
         </View>
-        <DashboardSummaryCard
-          subtitle="Total branch check-ins recorded"
-          title="Check-ins"
-          value={summary.stats.checkIns}
-        />
       </View>
 
       <View style={styles.todayCard}>
         <SectionHeader
-          eyebrow="Today in this gym"
-          subtitle={`Top focus: ${summary.today.topMuscleGroup}. ${summary.today.availableSessions} sessions are open for booking and ${summary.today.checkInsToday} check-ins have already been recorded.`}
-          title={`${summary.today.activeMembers} members are active today`}
+          eyebrow="Today in the gym"
+          subtitle={
+            summary.today.featuredSessionTitle
+              ? `Featured next session: ${summary.today.featuredSessionTitle}.`
+              : "Your upcoming sessions will appear here as soon as they are scheduled."
+          }
+          title={`${summary.today.availableSessions} sessions are open for booking`}
         />
         <View style={styles.todayMetricsRow}>
           <View style={styles.todayMetric}>
@@ -98,8 +97,8 @@ export const DashboardScreen = ({
             <Text style={styles.todayMetricLabel}>Check-ins today</Text>
           </View>
           <View style={styles.todayMetric}>
-            <Text style={styles.todayMetricValue}>{summary.today.availableSessions}</Text>
-            <Text style={styles.todayMetricLabel}>Open sessions</Text>
+            <Text style={styles.todayMetricValue}>{summary.today.activeMembers}</Text>
+            <Text style={styles.todayMetricLabel}>Active members</Text>
           </View>
         </View>
       </View>
@@ -127,15 +126,13 @@ export const DashboardScreen = ({
 
       <View style={styles.sessionsCard}>
         <SectionHeader
-          eyebrow="Available classes"
+          eyebrow="Upcoming sessions"
           sideLabel={`${sessions.length} live`}
-          subtitle="Scan the next sessions at your branch and mark attendance without leaving the dashboard."
-          title="Sessions at your branch"
+          subtitle="Browse live sessions from Supabase and check in directly from the app."
+          title="Sessions at your gym"
         />
         {sessionError ? <Text style={styles.errorText}>{sessionError}</Text> : null}
-        {sessions.length === 0 ? (
-          <Text style={styles.emptyText}>No upcoming sessions are available right now for this branch.</Text>
-        ) : null}
+        {sessions.length === 0 ? <Text style={styles.emptyText}>No upcoming sessions are available right now.</Text> : null}
         {sessions.map((session) => (
           <SessionOptionCard
             key={session.id}

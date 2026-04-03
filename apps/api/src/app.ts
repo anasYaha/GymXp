@@ -22,5 +22,6 @@ export const createApp = () => {
 };
 
 export const appConfig = {
+  host: env.host,
   port: env.port
 };

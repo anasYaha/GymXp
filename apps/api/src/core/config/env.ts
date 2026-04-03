@@ -1,6 +1,7 @@
 import "dotenv/config";
 
 export interface AppEnv {
+  host: string;
   port: number;
   databaseUrl: string;
   jwtSecret: string;
@@ -8,6 +9,7 @@ export interface AppEnv {
 }
 
 export const env: AppEnv = {
+  host: process.env.HOST ?? "0.0.0.0",
   port: Number(process.env.PORT ?? 4000),
   databaseUrl: process.env.DATABASE_URL ?? "postgresql://postgres:postgres@localhost:5432/gymxp",
   jwtSecret: process.env.JWT_SECRET ?? "replace-me",

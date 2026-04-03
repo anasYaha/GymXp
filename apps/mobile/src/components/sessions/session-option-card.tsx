@@ -1,31 +1,19 @@
-import type { BranchSessionOption } from "@gymxp/shared-types/contracts/sessions";
+import type { MemberSession } from "@gymxp/shared-types/contracts/sessions";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { themeTokens } from "../../theme/tokens";
 
 interface SessionOptionCardProps {
-  session: BranchSessionOption;
+  session: MemberSession;
   timingLabel: string;
   onCheckIn: (sessionId: string) => void;
   loading?: boolean;
 }
 
-const getCategoryTone = (muscleGroup: string) => {
-  const normalized = muscleGroup.trim().toLowerCase();
-
-  if (normalized.includes("cardio")) {
-    return { chip: "#E8F5EC", text: "#1B6A4A" };
-  }
-
-  if (normalized.includes("core")) {
-    return { chip: "#FFF1D8", text: "#8A5A00" };
-  }
-
-  if (normalized.includes("strength")) {
-    return { chip: "#E8EEFB", text: "#274690" };
-  }
-
-  return { chip: themeTokens.surfaceMuted, text: themeTokens.brandPrimary };
+const formatDuration = (startsAt: string, endsAt: string) => {
+  const durationMs = new Date(endsAt).getTime() - new Date(startsAt).getTime();
+  const minutes = Math.max(0, Math.round(durationMs / 60000));
+  return `${minutes} min`;
 };
 
 export const SessionOptionCard = ({
@@ -35,14 +23,13 @@ export const SessionOptionCard = ({
   loading = false
 }: SessionOptionCardProps) => {
   const disabled = session.checkedIn || loading;
-  const tone = getCategoryTone(session.muscleGroup);
 
   return (
     <View style={styles.card}>
       <View style={styles.topRow}>
         <View style={styles.titleBlock}>
-          <View style={[styles.categoryChip, { backgroundColor: tone.chip }]}>
-            <Text style={[styles.categoryText, { color: tone.text }]}>{session.muscleGroup}</Text>
+          <View style={styles.categoryChip}>
+            <Text style={styles.categoryText}>Upcoming session</Text>
           </View>
           <Text style={styles.title}>{session.title}</Text>
         </View>
@@ -54,11 +41,18 @@ export const SessionOptionCard = ({
       <View style={styles.metaRow}>
         <View style={styles.metaPill}>
           <Text style={styles.metaLabel}>Duration</Text>
-          <Text style={styles.metaValue}>{session.durationMins} min</Text>
+          <Text style={styles.metaValue}>{formatDuration(session.startsAt, session.endsAt)}</Text>
         </View>
         <View style={styles.metaPill}>
           <Text style={styles.metaLabel}>Coach</Text>
           <Text style={styles.metaValue}>{session.coachName ?? "Gym floor"}</Text>
+        </View>
+      </View>
+
+      <View style={styles.metaRow}>
+        <View style={styles.metaPill}>
+          <Text style={styles.metaLabel}>Capacity</Text>
+          <Text style={styles.metaValue}>{session.capacity ?? "Open"}</Text>
         </View>
       </View>
 
@@ -108,13 +102,15 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     borderRadius: 999,
     paddingHorizontal: 10,
-    paddingVertical: 5
+    paddingVertical: 5,
+    backgroundColor: themeTokens.surfaceMuted
   },
   categoryText: {
     fontSize: 11,
     fontWeight: "700",
     letterSpacing: 0.3,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    color: themeTokens.brandPrimary
   },
   title: {
     color: themeTokens.text,

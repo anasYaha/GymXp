@@ -21,7 +21,7 @@ export interface User {
   id: string;
   fullName: string;
   email: string;
-  brandId: string;
+  brandId?: string | null;
   currentBranchId: string | null;
   role: UserRole;
   createdAt: string;
