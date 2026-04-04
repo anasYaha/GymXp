@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -75,3 +76,19 @@ export class AuthService {
     };
   }
 }
+=======
+export class AuthService {
+  register(): Promise<never> {
+    return Promise.reject(new Error("TODO: implement member registration"));
+  }
+
+  login(): Promise<never> {
+    return Promise.reject(new Error("TODO: implement login"));
+  }
+
+  getMe(): Promise<never> {
+    return Promise.reject(new Error("TODO: implement auth/me"));
+  }
+}
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

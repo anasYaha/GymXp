@@ -21,8 +21,13 @@ export interface User {
   id: string;
   fullName: string;
   email: string;
+<<<<<<< HEAD
   brandId?: string | null;
   currentBranchId: string | null;
+=======
+  brandId: string;
+  currentBranchId: string;
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
   role: UserRole;
   createdAt: string;
   updatedAt: string;
@@ -48,3 +53,7 @@ export interface XPLog {
   reason: string;
   createdAt: string;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

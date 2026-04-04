@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { PropsWithChildren } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -68,3 +69,21 @@ const styles = StyleSheet.create({
     lineHeight: 22
   }
 });
+=======
+export interface ScreenShellProps<TContent> {
+  title: string;
+  subtitle?: string;
+  content: TContent;
+}
+
+export const ScreenShell = <TContent>({
+  title,
+  subtitle,
+  content
+}: ScreenShellProps<TContent>) => ({
+  title,
+  subtitle,
+  content
+});
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

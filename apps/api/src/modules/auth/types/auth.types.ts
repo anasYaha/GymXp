@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { UserRole } from "@prisma/client";
 
 export interface AuthTokenPayload {
@@ -6,3 +7,12 @@ export interface AuthTokenPayload {
   branchId: string | null;
   role: UserRole;
 }
+=======
+export interface AuthTokenPayload {
+  userId: string;
+  brandId: string;
+  branchId: string;
+  role: string;
+}
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

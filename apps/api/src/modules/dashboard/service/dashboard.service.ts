@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { HttpError } from "../../../core/errors/http-error";
 import { dashboardRepository } from "../repository/dashboard.repository";
 
@@ -79,3 +80,11 @@ export class DashboardService {
     };
   }
 }
+=======
+export class DashboardService {
+  getSummary(): Promise<never> {
+    return Promise.reject(new Error("TODO: implement branch-aware member dashboard summary"));
+  }
+}
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

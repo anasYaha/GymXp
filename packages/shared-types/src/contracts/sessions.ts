@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export interface MemberSession {
   id: string;
   title: string;
@@ -30,3 +31,21 @@ export interface SessionCheckInResponse {
   attendance: SessionAttendance;
   xpAwarded: number;
 }
+=======
+import type { WorkoutSession } from "../entities/brand";
+
+export interface CreateSessionRequest {
+  branchId: string;
+  muscleGroup: string;
+  startedAt: string;
+}
+
+export interface CompleteSessionRequest {
+  endedAt: string;
+}
+
+export interface SessionListResponse {
+  items: WorkoutSession[];
+}
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

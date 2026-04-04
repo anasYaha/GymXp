@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { RequestHandler } from "express";
 
 import { sendOk } from "../../../core/http/response";
@@ -39,3 +40,13 @@ export const sessionsController: Record<"listAvailable" | "listMine" | "checkIn"
     return sendOk(response, result, 201);
   }
 };
+=======
+import { notImplemented } from "../../../core/utils/not-implemented";
+
+export const sessionsController = {
+  create: () => notImplemented("POST /sessions"),
+  listMine: () => notImplemented("GET /sessions/me"),
+  complete: () => notImplemented("PATCH /sessions/:id/complete")
+};
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

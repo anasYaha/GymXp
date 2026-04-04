@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { HttpError } from "../../../core/errors/http-error";
 import { mapBranch } from "../mapper/branches.mapper";
 import { branchesRepository } from "../repository/branches.repository";
@@ -23,3 +24,11 @@ export class BranchesService {
     };
   }
 }
+=======
+export class BranchesService {
+  listBranchesForBrand(): Promise<never> {
+    return Promise.reject(new Error("TODO: implement branch listing"));
+  }
+}
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

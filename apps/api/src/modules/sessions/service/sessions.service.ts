@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { HttpError } from "../../../core/errors/http-error";
 import { mapSessionAttendance, mapSessionOption } from "../mapper/sessions.mapper";
 import { sessionsRepository } from "../repository/sessions.repository";
@@ -58,3 +59,19 @@ export class SessionsService {
     };
   }
 }
+=======
+export class SessionsService {
+  createSession(): Promise<never> {
+    return Promise.reject(new Error("TODO: implement session creation"));
+  }
+
+  listMemberSessions(): Promise<never> {
+    return Promise.reject(new Error("TODO: implement session listing"));
+  }
+
+  completeSession(): Promise<never> {
+    return Promise.reject(new Error("TODO: implement session completion"));
+  }
+}
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

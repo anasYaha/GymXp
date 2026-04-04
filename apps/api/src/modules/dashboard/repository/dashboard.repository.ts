@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { prisma } from "../../../core/database/prisma";
 
 export const dashboardRepository = {
@@ -74,3 +75,9 @@ export const dashboardRepository = {
     });
   }
 };
+=======
+export interface DashboardRepository {
+  getSummary(userId: string, branchId: string): Promise<unknown>;
+}
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

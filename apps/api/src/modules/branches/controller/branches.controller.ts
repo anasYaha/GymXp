@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { RequestHandler } from "express";
 
 import { sendOk } from "../../../core/http/response";
@@ -18,3 +19,12 @@ export const branchesController: Record<"list" | "detail", RequestHandler> = {
     return sendOk(response, result);
   }
 };
+=======
+import { notImplemented } from "../../../core/utils/not-implemented";
+
+export const branchesController = {
+  list: () => notImplemented("GET /branches"),
+  detail: () => notImplemented("GET /branches/:id")
+};
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

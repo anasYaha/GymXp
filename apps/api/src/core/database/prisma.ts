@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import prismaClientPackage from "@prisma/client";
 
 type PrismaClientType = InstanceType<(typeof prismaClientPackage)["PrismaClient"]>;
@@ -18,3 +19,10 @@ export const prisma =
 if (process.env.NODE_ENV !== "production") {
   globalThis.__gymxpPrisma = prisma;
 }
+=======
+export const prisma = {
+  status: "TODO",
+  message: "Initialize PrismaClient here once dependencies are installed."
+} as const;
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

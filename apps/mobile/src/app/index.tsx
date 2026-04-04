@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { DashboardSummaryResponse } from "@gymxp/shared-types/contracts/dashboard";
 import type { MemberSession } from "@gymxp/shared-types/contracts/sessions";
 import type { User } from "@gymxp/shared-types/entities/brand";
@@ -360,3 +361,30 @@ export const MobileAppRoot = () => {
 };
 
 export default MobileAppRoot;
+=======
+import { authStore } from "../features/auth/auth.store";
+import { resolveMemberInitialRoute } from "../navigation/app-navigator";
+import { BranchSelectionScreen } from "../screens/onboarding/branch-selection-screen";
+import { DashboardScreen } from "../screens/dashboard/dashboard-screen";
+
+export const MobileAppRoot = async () => {
+  const initialRoute = resolveMemberInitialRoute({
+    isAuthenticated: authStore.status === "authenticated",
+    currentBranchId: authStore.user?.currentBranchId ?? null
+  });
+
+  if (initialRoute === "onboarding-branch") {
+    return BranchSelectionScreen();
+  }
+
+  if (initialRoute === "dashboard-home") {
+    return DashboardScreen();
+  }
+
+  return {
+    route: initialRoute,
+    status: "pending-auth"
+  };
+};
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

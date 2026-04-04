@@ -1,4 +1,5 @@
 export const themeTokens = {
+<<<<<<< HEAD
   // Primary brand
   brandPrimary:       "#FF6B00",
   brandPrimaryStrong: "#CC5500",
@@ -47,3 +48,11 @@ export const radii = {
   xxl:  24,
   pill: 999,
 } as const;
+=======
+  brandPrimary: "#144E45",
+  accent: "#F4B942",
+  surface: "#F6F5F0",
+  text: "#102A26"
+} as const;
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { DashboardSummaryResponse } from "@gymxp/shared-types/contracts/dashboard";
 import type { MemberSession } from "@gymxp/shared-types/contracts/sessions";
 import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -183,3 +184,49 @@ const styles = StyleSheet.create({
   logoutButton: { alignItems: "center", paddingVertical: 8, marginTop: 12 },
   logoutText: { color: themeTokens.textMuted, fontWeight: "700", fontSize: 15 },
 });
+=======
+import { ActiveBranchCard } from "../../components/branch/active-branch-card";
+import { ScreenShell } from "../../components/common/screen-shell";
+import { DashboardSummaryCard } from "../../components/dashboard/dashboard-summary-card";
+import { XpBadge } from "../../components/gamification/xp-badge";
+import { getDefaultMemberBranch } from "../../features/branch/branch.service";
+import { getDashboardSummary } from "../../features/dashboard/dashboard.service";
+
+export const DashboardScreen = async () => {
+  const [summary, branch] = await Promise.all([
+    getDashboardSummary(),
+    getDefaultMemberBranch()
+  ]);
+
+  return ScreenShell({
+    title: `Welcome back, ${summary.member.firstName}`,
+    subtitle: "Your daily gym view is scoped to your active branch.",
+    content: {
+      activeBranchCard: ActiveBranchCard(branch),
+      gamification: XpBadge(summary.xp),
+      stats: [
+        DashboardSummaryCard({
+          title: "XP",
+          value: summary.xp,
+          helperText: "Branch-scoped progress"
+        }),
+        DashboardSummaryCard({
+          title: "Streak",
+          value: `${summary.streakDays} days`,
+          helperText: "Consecutive active days"
+        }),
+        DashboardSummaryCard({
+          title: "Rank",
+          value: summary.rank ?? "-",
+          helperText: "Inside your branch"
+        })
+      ],
+      today: {
+        activeMembers: summary.todayInThisGym.activeMembers,
+        peakWindow: summary.todayInThisGym.peakWindow
+      }
+    }
+  });
+};
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

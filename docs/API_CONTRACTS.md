@@ -1,6 +1,10 @@
 # API Contracts
 
+<<<<<<< HEAD
 These contracts reflect the implemented Phase 1 MVP flow.
+=======
+These are placeholder contracts to keep frontend and backend aligned during scaffold-first development.
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
 
 ## `POST /auth/register`
 
@@ -8,7 +12,13 @@ These contracts reflect the implemented Phase 1 MVP flow.
 {
   "fullName": "Aymen Ben Salah",
   "email": "aymen@gymxp.demo",
+<<<<<<< HEAD
   "password": "demo12345"
+=======
+  "password": "demo-password",
+  "brandId": "brand_gym_city",
+  "branchId": "branch_sousse"
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
 }
 ```
 
@@ -23,7 +33,11 @@ Response:
     "email": "aymen@gymxp.demo",
     "role": "MEMBER",
     "brandId": "brand_gym_city",
+<<<<<<< HEAD
     "currentBranchId": null
+=======
+    "currentBranchId": "branch_sousse"
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
   }
 }
 ```
@@ -64,9 +78,13 @@ Response matches `register`.
       "brandId": "brand_gym_city",
       "name": "Gym City Sousse",
       "city": "Sousse",
+<<<<<<< HEAD
       "address": "Boulevard du 14 Janvier",
       "createdAt": "2026-03-29T18:00:00.000Z",
       "updatedAt": "2026-03-29T18:00:00.000Z"
+=======
+      "address": "Demo address"
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
     }
   ]
 }
@@ -84,6 +102,7 @@ Response:
 
 ```json
 {
+<<<<<<< HEAD
   "currentBranchId": "branch_sousse",
   "branch": {
     "id": "branch_sousse",
@@ -101,6 +120,9 @@ Response:
     "updatedAt": "2026-03-29T18:00:00.000Z"
   },
   "token": "jwt-with-branch-context"
+=======
+  "currentBranchId": "branch_sousse"
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
 }
 ```
 
@@ -108,6 +130,7 @@ Response:
 
 ```json
 {
+<<<<<<< HEAD
   "user": {
     "id": "u_1",
     "fullName": "Ali Ben Salah",
@@ -126,6 +149,22 @@ Response:
   "today": {
     "activeMembers": 14,
     "topMuscleGroup": "Legs"
+=======
+  "member": {
+    "firstName": "Aymen"
+  },
+  "activeBranch": {
+    "id": "branch_sousse",
+    "name": "Gym City Sousse",
+    "city": "Sousse"
+  },
+  "xp": 420,
+  "streakDays": 6,
+  "rank": 4,
+  "todayInThisGym": {
+    "activeMembers": 27,
+    "peakWindow": "18:00-20:00"
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
   }
 }
 ```
@@ -234,3 +273,7 @@ Response:
   ]
 }
 ```
+<<<<<<< HEAD
+=======
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

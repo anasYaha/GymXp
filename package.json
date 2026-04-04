@@ -14,7 +14,13 @@
     "dev:admin": "pnpm --filter @gymxp/admin-web dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
+<<<<<<< HEAD
     "typecheck": "pnpm -r typecheck"
+=======
+    "typecheck": "pnpm -r typecheck",
+    "test:dev-a": "node scripts/test-dev-a.mjs",
+    "preview:mobile": "node scripts/render-mobile-preview.mjs"
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
   }
 }
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { Prisma } from "@prisma/client";
 
 import { prisma } from "../../../core/database/prisma";
@@ -44,3 +45,10 @@ export const branchesRepository = {
     });
   }
 };
+=======
+export interface BranchesRepository {
+  listByBrand(brandId: string): Promise<unknown[]>;
+  findById(branchId: string): Promise<unknown>;
+}
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

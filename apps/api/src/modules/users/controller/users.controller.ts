@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { RequestHandler } from "express";
 
 import { sendOk } from "../../../core/http/response";
@@ -25,3 +26,12 @@ export const usersController: Record<"selectBranch" | "profile", RequestHandler>
     });
   }
 };
+=======
+import { notImplemented } from "../../../core/utils/not-implemented";
+
+export const usersController = {
+  selectBranch: () => notImplemented("POST /users/select-branch"),
+  profile: () => notImplemented("GET /users/me")
+};
+
+>>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
