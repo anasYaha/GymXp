@@ -1,0 +1,13 @@
+export enum UserRole {
+  MEMBER = "MEMBER",
+  BRANCH_ADMIN = "BRANCH_ADMIN",
+  BRAND_OWNER = "BRAND_OWNER",
+  PLATFORM_ADMIN = "PLATFORM_ADMIN"
+}
+
+export enum WorkoutStatus {
+  ACTIVE = "ACTIVE",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED"
+}
+
