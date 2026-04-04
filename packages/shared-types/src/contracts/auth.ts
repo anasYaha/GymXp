@@ -9,11 +9,8 @@ export interface RegisterRequest {
   fullName: string;
   email: string;
   password: string;
-<<<<<<< HEAD
-=======
-  brandId: string;
-  branchId: string;
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
+  brandId?: string;
+  branchId?: string;
 }
 
 export interface LoginRequest {
@@ -21,9 +18,6 @@ export interface LoginRequest {
   password: string;
 }
 
-<<<<<<< HEAD
 export interface AuthMeResponse {
   user: User;
 }
-=======
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

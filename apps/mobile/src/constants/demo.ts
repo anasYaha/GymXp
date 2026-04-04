@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-export const DEMO_BRAND_NAME = "Gym City Tunisia";
-export const DEMO_BRANCH_NAME = "Gym City Sousse";
-=======
 import type { DashboardSummaryResponse } from "@gymxp/shared-types/contracts/dashboard";
 import type { AuthResponse } from "@gymxp/shared-types/contracts/auth";
 import type {
@@ -10,7 +6,7 @@ import type {
 } from "@gymxp/shared-types/contracts/leaderboard";
 import type {
   CreateSessionRequest,
-  SessionListResponse
+  MemberSession
 } from "@gymxp/shared-types/contracts/sessions";
 import type { GymBranch } from "@gymxp/shared-types/entities/brand";
 import { UserRole } from "@gymxp/shared-types/enums/roles";
@@ -65,20 +61,32 @@ export const DEMO_AUTH_RESPONSE: AuthResponse = {
 };
 
 export const DEMO_DASHBOARD_SUMMARY: DashboardSummaryResponse = {
-  member: {
-    firstName: "Ali"
+  user: {
+    id: DEMO_AUTH_RESPONSE.user.id,
+    fullName: DEMO_AUTH_RESPONSE.user.fullName,
+    email: DEMO_AUTH_RESPONSE.user.email
   },
-  activeBranch: {
+  gym: {
     id: DEMO_BRANCH_ID,
     name: DEMO_BRANCH_NAME,
     city: "Sousse"
   },
-  xp: 420,
-  streakDays: 6,
-  rank: 4,
-  todayInThisGym: {
+  stats: {
+    xp: 420,
+    streak: 6,
+    checkIns: 18
+  },
+  today: {
     activeMembers: 27,
-    peakWindow: "18:00-20:00"
+    featuredSessionTitle: "Evening Strength Circuit",
+    checkInsToday: 14,
+    availableSessions: 3
+  },
+  sessions: {
+    totalCheckIns: 18,
+    checkedInToday: true,
+    lastCheckInTitle: "Leg Day Burn",
+    lastCheckInAt: "2026-03-30T18:00:00.000Z"
   }
 };
 
@@ -86,33 +94,33 @@ export const DEMO_ONBOARDING_AUTH_RESPONSE: AuthResponse = {
   ...DEMO_AUTH_RESPONSE,
   user: {
     ...DEMO_AUTH_RESPONSE.user,
-    currentBranchId: ""
+    currentBranchId: null
   }
 };
 
-export const DEMO_SESSION_LIST: SessionListResponse = {
+export const DEMO_SESSION_LIST: { items: MemberSession[] } = {
   items: [
     {
       id: "session_1",
-      userId: DEMO_AUTH_RESPONSE.user.id,
-      branchId: DEMO_BRANCH_ID,
-      muscleGroup: "CHEST",
-      startedAt: "2026-03-29T09:00:00.000Z",
-      endedAt: "2026-03-29T10:05:00.000Z",
-      status: "COMPLETED",
-      createdAt: "2026-03-29T09:00:00.000Z",
-      updatedAt: "2026-03-29T10:05:00.000Z"
+      title: "Chest Builder",
+      description: "Upper-body hypertrophy focus",
+      coachName: "Coach Amine",
+      startsAt: "2026-03-29T09:00:00.000Z",
+      endsAt: "2026-03-29T10:05:00.000Z",
+      capacity: 20,
+      checkedIn: true,
+      createdAt: "2026-03-29T09:00:00.000Z"
     },
     {
       id: "session_2",
-      userId: DEMO_AUTH_RESPONSE.user.id,
-      branchId: DEMO_BRANCH_ID,
-      muscleGroup: "LEGS",
-      startedAt: "2026-03-28T17:30:00.000Z",
-      endedAt: "2026-03-28T18:42:00.000Z",
-      status: "COMPLETED",
-      createdAt: "2026-03-28T17:30:00.000Z",
-      updatedAt: "2026-03-28T18:42:00.000Z"
+      title: "Leg Power Hour",
+      description: "Strength and mobility blend",
+      coachName: "Coach Sara",
+      startsAt: "2026-03-28T17:30:00.000Z",
+      endsAt: "2026-03-28T18:42:00.000Z",
+      capacity: 18,
+      checkedIn: false,
+      createdAt: "2026-03-28T17:30:00.000Z"
     }
   ]
 };
@@ -171,5 +179,4 @@ export const DEMO_PROFILE = {
     weeklyGoal: 4
   }
 };
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
 

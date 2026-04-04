@@ -8,8 +8,6 @@ Reserved for:
 
 TODO: add `setup.ps1` and `seed-demo-data.ts` once dependencies are installed.
 
-<<<<<<< HEAD
-=======
 ## Current Scripts
 
 - `node scripts/test-dev-a.mjs`
@@ -23,5 +21,3 @@ TODO: add `setup.ps1` and `seed-demo-data.ts` once dependencies are installed.
 
 - `npm run preview:mobile`
   Workspace shortcut for the mobile preview generator.
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

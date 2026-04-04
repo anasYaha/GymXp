@@ -1,5 +1,4 @@
 import type { DashboardSummaryResponse } from "@gymxp/shared-types/contracts/dashboard";
-<<<<<<< HEAD
 import type { User } from "@gymxp/shared-types/entities/brand";
 
 import { SINGLE_GYM } from "../../lib/member-data";
@@ -143,17 +142,3 @@ export const getDashboardSummary = async (user: User): Promise<DashboardSummaryR
     }
   };
 };
-=======
-
-import { DEMO_DASHBOARD_SUMMARY } from "../../constants/demo";
-import { apiClient } from "../../services/api/api-client";
-
-export const getDashboardSummary = async (): Promise<DashboardSummaryResponse> => {
-  try {
-    return await apiClient.get<DashboardSummaryResponse>("/dashboard/summary");
-  } catch {
-    return DEMO_DASHBOARD_SUMMARY;
-  }
-};
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

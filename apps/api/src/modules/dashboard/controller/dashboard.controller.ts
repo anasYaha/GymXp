@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import type { RequestHandler } from "express";
 
 import { sendOk } from "../../../core/http/response";
@@ -12,11 +11,3 @@ export const dashboardController: Record<"summary", RequestHandler> = {
     return sendOk(response, result);
   }
 };
-=======
-import { notImplemented } from "../../../core/utils/not-implemented";
-
-export const dashboardController = {
-  summary: () => notImplemented("GET /dashboard/summary")
-};
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import cors from "cors";
 import express from "express";
 
@@ -26,15 +25,3 @@ export const appConfig = {
   host: env.host,
   port: env.port
 };
-=======
-import { env } from "./core/config/env";
-
-export const createApp = () => {
-  return {
-    status: "TODO",
-    port: env.port,
-    message: "Express app factory placeholder. Register middleware and routes here."
-  };
-};
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

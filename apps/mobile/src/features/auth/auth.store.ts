@@ -1,6 +1,5 @@
 import type { User } from "@gymxp/shared-types/entities/brand";
 
-<<<<<<< HEAD
 export interface AuthSessionState {
   token: string | null;
   user: User | null;
@@ -8,37 +7,28 @@ export interface AuthSessionState {
   initialized: boolean;
 }
 
-export const authStore: AuthSessionState = {
-  token: null,
-  user: null,
-  status: "booting",
-  initialized: false
-};
-
-export const setAuthStore = (nextState: Partial<AuthSessionState>) => {
-  Object.assign(authStore, nextState);
-};
-=======
-export const authStore: {
-  token: string | null;
-  user: User | null;
-  status: "idle" | "loading" | "authenticated";
+interface AuthStore extends AuthSessionState {
   setSession: (token: string, user: User) => void;
   clearSession: () => void;
   setCurrentBranchId: (branchId: string) => void;
-} = {
+}
+
+export const authStore: AuthStore = {
   token: null,
   user: null,
-  status: "idle",
+  status: "booting",
+  initialized: false,
   setSession(token: string, user: User) {
     authStore.token = token;
     authStore.user = user;
     authStore.status = "authenticated";
+    authStore.initialized = true;
   },
   clearSession() {
     authStore.token = null;
     authStore.user = null;
-    authStore.status = "idle";
+    authStore.status = "guest";
+    authStore.initialized = true;
   },
   setCurrentBranchId(branchId: string) {
     if (!authStore.user) {
@@ -52,4 +42,6 @@ export const authStore: {
   }
 };
 
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
+export const setAuthStore = (nextState: Partial<AuthSessionState>) => {
+  Object.assign(authStore, nextState);
+};

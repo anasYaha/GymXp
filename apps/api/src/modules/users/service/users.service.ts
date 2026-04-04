@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import jwt from "jsonwebtoken";
 
 import { env } from "../../../core/config/env";
@@ -43,11 +42,3 @@ export class UsersService {
     };
   }
 }
-=======
-export class UsersService {
-  selectActiveBranch(): Promise<never> {
-    return Promise.reject(new Error("TODO: implement active branch assignment"));
-  }
-}
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

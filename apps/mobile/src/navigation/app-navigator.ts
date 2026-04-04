@@ -1,20 +1,15 @@
 export const memberRoutes = [
   "login",
-<<<<<<< HEAD
+  "onboarding-branch",
   "onboarding-profile-info",
   "onboarding-fitness-info",
   "onboarding-avatar-setup",
-=======
-  "onboarding-branch",
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
   "dashboard-home",
   "session-create",
   "leaderboard",
   "profile",
   "settings"
 ] as const;
-<<<<<<< HEAD
-=======
 
 export type MemberRoute = (typeof memberRoutes)[number];
 
@@ -37,5 +32,3 @@ export const resolveMemberInitialRoute = ({
 
   return "dashboard-home";
 };
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

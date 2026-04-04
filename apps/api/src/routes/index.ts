@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Router } from "express";
 
 import { asyncHandler } from "../core/http/async-handler";
@@ -79,23 +78,3 @@ export const registerRoutes = () => {
 
   return router;
 };
-=======
-export const routeRegistry = [
-  "auth",
-  "users",
-  "brands",
-  "branches",
-  "dashboard",
-  "sessions",
-  "gamification",
-  "leaderboard",
-  "analytics",
-  "admin"
-] as const;
-
-export const registerRoutes = (): string[] => {
-  // TODO: mount Express routers by module.
-  return [...routeRegistry];
-};
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

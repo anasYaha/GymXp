@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-export const getBranchLeaderboard = async () => {
-  return Promise.resolve({
-    status: "TODO",
-    message: "Connect branch leaderboard endpoint"
-  });
-=======
 import type {
   LeaderboardResponse,
   MyLeaderboardResponse
@@ -27,6 +20,5 @@ export const getMyLeaderboardStanding = async (): Promise<MyLeaderboardResponse>
   } catch {
     return DEMO_MY_LEADERBOARD;
   }
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
 };
 

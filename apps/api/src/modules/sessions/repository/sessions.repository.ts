@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import type { Prisma } from "@prisma/client";
 
 import { prisma } from "../../../core/database/prisma";
@@ -131,10 +130,3 @@ export const sessionsRepository = {
     });
   }
 };
-=======
-export interface SessionsRepository {
-  create(input: unknown): Promise<unknown>;
-  findForUser(userId: string): Promise<unknown[]>;
-}
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

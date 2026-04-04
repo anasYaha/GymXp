@@ -1,6 +1,5 @@
 # Demo Seed
 
-<<<<<<< HEAD
 The Phase 1 seed creates deterministic MVP data:
 - one brand: `Gym City`
 - two branches: `Gym City Tunis` and `Gym City Sousse`
@@ -9,14 +8,3 @@ The Phase 1 seed creates deterministic MVP data:
 Demo credentials:
 - `ali@example.com` / `demo12345`
 - `sara@example.com` / `demo12345`
-=======
-Planned demo data:
-- one brand: Gym City Tunisia
-- multiple branches: Tunis, Sousse, Lac
-- demo members with active branch assignments
-- sample workout sessions
-- sample XP logs and leaderboard data
-
-TODO: implement deterministic seed script after Prisma client setup.
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

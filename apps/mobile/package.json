@@ -2,9 +2,7 @@
   "name": "@gymxp/mobile",
   "version": "0.1.0",
   "private": true,
-<<<<<<< HEAD
   "main": "expo-router/entry",
-  "type": "module",
   "scripts": {
     "dev": "expo start --offline --port 8082",
     "build": "echo Mobile build TODO",
@@ -32,14 +30,3 @@
     "typescript": "^5.8.2"
   }
 }
-=======
-  "type": "module",
-  "scripts": {
-    "dev": "expo start",
-    "build": "echo Mobile build TODO",
-    "lint": "echo Mobile lint TODO",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
-  }
-}
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

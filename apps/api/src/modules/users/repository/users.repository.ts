@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import type { Prisma } from "@prisma/client";
 
 import { prisma } from "../../../core/database/prisma";
@@ -31,9 +30,3 @@ export const usersRepository = {
     });
   }
 };
-=======
-export interface UsersRepository {
-  updateCurrentBranch(userId: string, branchId: string): Promise<void>;
-}
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

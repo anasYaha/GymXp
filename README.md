@@ -2,7 +2,16 @@
 
 GymXP is a gym-centered B2B2C platform sold to a gym brand owner, not a public consumer fitness app.
 
-<<<<<<< HEAD
+The business model is brand-based:
+- a paying client is a gym brand such as Gym City Tunisia
+- a brand can operate multiple branches
+- members live inside one brand ecosystem
+
+The user experience is branch-based:
+- members primarily act inside one active branch
+- dashboard, sessions, XP, streaks, leaderboard, and activity are scoped to branch context
+- the demo MVP keeps one active branch per user, while the architecture stays ready for future multi-branch support
+
 For the current MVP demo:
 
 - the demo brand is `Gym City`
@@ -20,33 +29,9 @@ This repository now implements the first usable member flow:
 4. select a branch
 5. land on a branch-aware dashboard summary
 
-## Repo Layout
-
-```text
-=======
-The business model is brand-based:
-- a paying client is a gym brand such as Gym City Tunisia
-- a brand can operate multiple branches
-- members live inside one brand ecosystem
-
-The user experience is branch-based:
-- members primarily act inside one active branch
-- dashboard, sessions, XP, streaks, leaderboard, and activity are scoped to branch context
-- the demo MVP keeps one active branch per user, while the architecture stays ready for future multi-branch support
-
-## Why This Repo Is Structured This Way
-
-This scaffold is designed so two developers can work in parallel with minimal merge conflicts:
-- apps/mobile focuses on the member experience
-- apps/admin-web focuses on the owner or branch admin experience
-- apps/api owns backend, data, and business logic
-- packages/shared-types centralizes contracts that both frontend and backend must agree on early
-- docs keeps product and architecture alignment explicit
-
 ## Repository Structure
 
-text
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
+```text
 GymXP/
   apps/
     api/
@@ -58,8 +43,24 @@ GymXP/
     ui/
   docs/
   scripts/
-<<<<<<< HEAD
 ```
+
+## Why This Repo Is Structured This Way
+
+This scaffold is designed so two developers can work in parallel with minimal merge conflicts:
+- apps/mobile focuses on the member experience
+- apps/admin-web focuses on the owner or branch admin experience
+- apps/api owns backend, data, and business logic
+- packages/shared-types centralizes contracts that both frontend and backend must agree on early
+- docs keeps product and architecture alignment explicit
+
+## MVP Scope
+
+The demo intentionally stays simple:
+- one user belongs to one brand
+- one user has one active branch
+- no branch switching in the main demo flow after setup
+- branch awareness is still represented in models, DTOs, and screen structure
 
 ## Backend Setup
 
@@ -98,14 +99,16 @@ Default API URL: `http://localhost:4000`
 
 ## Mobile Setup
 
-1. Set the mobile API base URL:
+1. Set the mobile env values:
 
 ```bash
+EXPO_PUBLIC_SUPABASE_URL=your-supabase-url
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 EXPO_PUBLIC_API_BASE_URL=http://localhost:4000
+EXPO_PUBLIC_BRAND_SLUG=gym-city-tunisia
 ```
 
 2. Start the mobile app:
-3. C:\Users\anasy\Desktop\GymXp-feature-avatar-3d-foundation\GymXp-feature-avatar-3d-foundation>pnpm dev:api
 
 ```bash
 pnpm dev:mobile
@@ -127,21 +130,6 @@ New registrations are created under the seeded `Gym City` brand and can choose a
 - `GET /branches/:id`
 - `POST /users/select-branch`
 - `GET /dashboard/summary`
-
-## Notes
-
-- Branch responses are filtered to the authenticated user's brand.
-- Branch selection updates `currentBranchId` and issues a fresh token carrying the new branch context.
-- Dashboard summary uses the real selected branch and mocked branch-scoped stats for MVP Phase 1.
-=======
-
-## MVP Scope
-
-The demo intentionally stays simple:
-- one user belongs to one brand
-- one user has one active branch
-- no branch switching in the main demo flow after setup
-- branch awareness is still represented in models, DTOs, and screen structure
 
 ## Planned Domains
 
@@ -170,6 +158,12 @@ Platform side:
 - seed data
 - environment and deployment preparation
 
+## Notes
+
+- Branch responses are filtered to the authenticated user's brand.
+- Branch selection updates `currentBranchId` and issues a fresh token carrying the new branch context.
+- Dashboard summary uses the real selected branch and mocked branch-scoped stats for MVP Phase 1.
+
 ## Run Strategy
 
 This repository is scaffold-first. It gives the team a stable file and module layout before full implementation.
@@ -180,7 +174,7 @@ Suggested next steps:
 3. connect backend modules to Prisma
 4. build mobile member flows against agreed contracts
 5. add admin analytics views once backend snapshots are available
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
+
 
 ## Important Docs
 
@@ -189,8 +183,3 @@ Suggested next steps:
 - [API Contracts](./docs/API_CONTRACTS.md)
 - [Task Split](./docs/TASK_SPLIT.md)
 - [Development Workflow](./docs/DEVELOPMENT_WORKFLOW.md)
-<<<<<<< HEAD
-=======
-
-#
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

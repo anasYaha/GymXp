@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { StyleSheet, Text, View } from "react-native";
 
 import { themeTokens } from "../../theme/tokens";
@@ -77,14 +76,3 @@ const styles = StyleSheet.create({
     lineHeight: 20
   }
 });
-=======
-import type { GymBranch } from "@gymxp/shared-types/entities/brand";
-
-export const ActiveBranchCard = (branch: Pick<GymBranch, "name" | "city" | "address">) => ({
-  eyebrow: "Active branch",
-  title: branch.name,
-  subtitle: branch.city,
-  detail: branch.address ?? "Address will be provided by your gym team."
-});
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

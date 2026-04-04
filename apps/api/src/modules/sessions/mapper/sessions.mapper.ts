@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import type { SessionAttendanceRecord, SessionOptionRecord } from "../repository/sessions.repository";
 
 export const mapSessionOption = (input: SessionOptionRecord) => ({
@@ -35,7 +34,3 @@ export const mapSessionAttendance = (input: SessionAttendanceRecord) => ({
     updatedAt: input.sessionOption.updatedAt.toISOString()
   }
 });
-=======
-export const mapWorkoutSession = (input: unknown) => input;
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

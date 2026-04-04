@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { StyleSheet, Text, View } from "react-native";
 
 import { themeTokens } from "../../theme/tokens";
@@ -8,18 +7,11 @@ interface DashboardSummaryCardProps {
   value: string | number;
   subtitle?: string;
   highlight?: boolean;
-=======
-export interface DashboardSummaryCardProps {
-  title: string;
-  value: string | number;
-  helperText?: string;
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
 }
 
 export const DashboardSummaryCard = ({
   title,
   value,
-<<<<<<< HEAD
   subtitle,
   highlight = false
 }: DashboardSummaryCardProps) => {
@@ -84,12 +76,3 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,0.65)"
   }
 });
-=======
-  helperText
-}: DashboardSummaryCardProps) => ({
-  title,
-  value,
-  helperText
-});
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

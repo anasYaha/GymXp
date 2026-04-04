@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import type { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
@@ -51,13 +50,3 @@ export const requireAdmin: RequestHandler = (request, _response, next) => {
 
   return next();
 };
-=======
-export const requireAuth = (): void => {
-  // TODO: validate JWT, load user, and enforce brand-aware access.
-};
-
-export const requireAdmin = (): void => {
-  // TODO: enforce admin or branch-admin role checks here.
-};
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

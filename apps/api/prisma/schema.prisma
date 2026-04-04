@@ -38,11 +38,8 @@ model GymBranch {
   address            String?
   users              User[]                     @relation("CurrentBranchUsers")
   workoutSessions    WorkoutSession[]
-<<<<<<< HEAD
   sessionOptions     BranchSessionOption[]
   sessionAttendances SessionAttendance[]
-=======
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
   xpLogs             XPLog[]
   streakSnapshots    StreakSnapshot[]
   leaderboardEntries LeaderboardSnapshot[]
@@ -58,25 +55,17 @@ model User {
   passwordHash    String
   brandId         String
   brand           GymBrand         @relation(fields: [brandId], references: [id])
-<<<<<<< HEAD
   currentBranchId String?
   currentBranch   GymBranch?       @relation("CurrentBranchUsers", fields: [currentBranchId], references: [id])
   role            UserRole         @default(MEMBER)
   sessions        WorkoutSession[]
   sessionAttendances SessionAttendance[]
-=======
-  currentBranchId String
-  currentBranch   GymBranch        @relation("CurrentBranchUsers", fields: [currentBranchId], references: [id])
-  role            UserRole         @default(MEMBER)
-  sessions        WorkoutSession[]
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
   xpLogs          XPLog[]
   streaks         StreakSnapshot[]
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
 }
 
-<<<<<<< HEAD
 model BranchSessionOption {
   id           String              @id @default(cuid())
   branchId     String
@@ -109,8 +98,6 @@ model SessionAttendance {
   @@index([userId, branchId, checkedInAt])
 }
 
-=======
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
 model WorkoutSession {
   id          String        @id @default(cuid())
   userId      String
@@ -170,7 +157,3 @@ model BranchAnalyticsSnapshot {
   recordedAt         DateTime
   createdAt          DateTime  @default(now())
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

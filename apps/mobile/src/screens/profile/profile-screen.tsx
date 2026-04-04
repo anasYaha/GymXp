@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { AvatarPreviewCard } from "../../components/avatar/avatar-preview-card";
 import { ScreenShell } from "../../components/common/screen-shell";
 import { SectionHeader } from "../../components/common/section-header";
@@ -23,28 +22,3 @@ export const ProfileScreen = () => {
     </ScreenShell>
   );
 };
-=======
-import { ScreenShell } from "../../components/common/screen-shell";
-import { getProfile } from "../../features/profile/profile.service";
-
-export const ProfileScreen = async () => {
-  const profile = await getProfile();
-
-  return ScreenShell({
-    title: profile.user.fullName,
-    subtitle: "Your member profile stays tied to one gym brand account.",
-    content: {
-      email: profile.user.email,
-      role: profile.user.role,
-      brandId: profile.user.brandId,
-      activeBranch: {
-        id: profile.branch.id,
-        name: profile.branch.name,
-        city: profile.branch.city
-      },
-      preferences: profile.preferences
-    }
-  });
-};
-
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402

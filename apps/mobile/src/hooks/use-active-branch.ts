@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-export const useActiveBranch = () => {
-  return {
-    branchId: null
-  };
-};
-=======
 import {
   initialBranchState,
   type ActiveBranchState
@@ -24,4 +17,3 @@ export const useActiveBranch = (
   };
 };
 
->>>>>>> 19a8392d8b9fce35da33f576904dc6c15d161402
