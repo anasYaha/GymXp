@@ -71,7 +71,7 @@ export const MobileAppRoot = () => {
 
   const loadMemberData = async (currentUser: User) => {
     const [nextSummary, nextSessions] = await Promise.all([
-      getDashboardSummary(currentUser),
+      getDashboardSummary(currentUser, JSON.parse(await import("@react-native-async-storage/async-storage").then(m => m.default.getItem("@gymxp_training_state")) || "{}")?.days?.find((d: any) => d.day === ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][new Date().getDay()])?.type || undefined),
       listAvailableSessions()
     ]);
 
@@ -349,6 +349,7 @@ export const MobileAppRoot = () => {
             checkingInSessionId={checkingInSessionId}
             onCheckIn={handleCheckIn}
             onLogout={handleLogout}
+            onRefresh={() => loadMemberData(user)}
             sessionError={error ?? notice}
             sessions={sessionOptions}
             summary={summary}

@@ -11,6 +11,8 @@ import { WorkoutCard } from "../../components/ui/workout-card";
 import { BadgeChipRow } from "../../components/ui/badge-chip";
 import { XpProgressBar } from "../../components/ui/xp-progress-bar";
 import { themeTokens, spacing, radii } from "../../theme/tokens";
+import { completeWorkoutRoutine } from "../../features/session/session.service";
+import { useState } from "react";
 
 interface DashboardScreenProps {
   summary: DashboardSummaryResponse;
@@ -46,12 +48,17 @@ export const DashboardScreen = ({
   checkingInSessionId,
   onCheckIn,
   onLogout,
-  onNavigateToSession
-}: DashboardScreenProps) => {
+  onNavigateToSession,
+  onRefresh
+}: DashboardScreenProps & { onRefresh?: () => Promise<void> }) => {
   const { state } = useTrainingContext();
+  const [isCompleting, setIsCompleting] = useState(false);
+  const [completeSuccess, setCompleteSuccess] = useState(false);
 
   const xp = summary.stats.xp;
-  const xpMax = 4000;
+  const currentLevel = Math.floor(xp / 100) + 1;
+  const xpInLevel = xp % 100;
+  const xpMax = 100;
   const streak = summary.stats.streak;
 
   const days: DayName[] = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -77,17 +84,17 @@ export const DashboardScreen = ({
         {/* Hero Card */}
         <HeroCard
           eyebrow="IRON WARRIOR"
-          title={`LEVEL ${Math.floor(xp / 100)} · IRON WARRIOR`}
+          title={`LEVEL ${currentLevel} · IRON WARRIOR`}
           subtitle={`Avatar Skin: Shadow Titan`}
         >
-          <XpProgressBar current={xp} max={xpMax} label={`${xp.toLocaleString()} / ${xpMax.toLocaleString()} XP`} />
+          <XpProgressBar current={xpInLevel} max={xpMax} label={`${xp.toLocaleString()} Total XP`} />
         </HeroCard>
 
         {/* Stat Grid */}
         <View style={styles.statGrid}>
           <StatCard value={streak} label="🔥 Streak" color={themeTokens.brandPrimary} borderColor={themeTokens.brandPrimary} />
           <StatCard value={summary.stats.checkIns} label="Sessions" />
-          <StatCard value="92%" label="Performance" color={themeTokens.accent} />
+          <StatCard value={summary.today.sameDayUsers ?? 0} label="Same Day" color={themeTokens.accent} />
         </View>
 
         {/* Streak Banner */}
@@ -115,6 +122,30 @@ export const DashboardScreen = ({
                  <Text style={styles.miniExerciseSets}>{ex.sets} sets</Text>
                </View>
             ))}
+
+            <Pressable 
+              disabled={isCompleting || completeSuccess}
+              onPress={async () => {
+                setIsCompleting(true);
+                try {
+                  await completeWorkoutRoutine(todayWorkout.type);
+                  setCompleteSuccess(true);
+                  if (onRefresh) await onRefresh();
+                } catch (e) {
+                  console.error(e);
+                } finally {
+                  setIsCompleting(false);
+                }
+              }}
+              style={[
+                styles.completeButton,
+                completeSuccess && { backgroundColor: themeTokens.accent }
+              ]}
+            >
+              <Text style={styles.completeButtonText}>
+                {isCompleting ? "SAVING..." : completeSuccess ? "DONE! +100 XP" : "COMPLETE ROUTINE"}
+              </Text>
+            </Pressable>
           </View>
         ) : (
           <View style={styles.emptyWorkoutCard}>
@@ -182,4 +213,17 @@ const styles = StyleSheet.create({
   errorText: { color: themeTokens.danger, fontSize: 14, fontWeight: "600" },
   logoutButton: { alignItems: "center", paddingVertical: 8, marginTop: 12 },
   logoutText: { color: themeTokens.textMuted, fontWeight: "700", fontSize: 15 },
+  completeButton: { 
+    backgroundColor: themeTokens.brandPrimary, 
+    paddingVertical: 12, 
+    borderRadius: radii.md, 
+    alignItems: "center", 
+    marginTop: 8,
+    shadowColor: themeTokens.brandPrimary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 4
+  },
+  completeButtonText: { color: "#FFFFFF", fontWeight: "800", fontSize: 14, letterSpacing: 1 },
 });

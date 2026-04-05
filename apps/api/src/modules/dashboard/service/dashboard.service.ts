@@ -22,7 +22,7 @@ const branchMockStats: Record<
 };
 
 export class DashboardService {
-  async getSummary(userId: string, brandId: string) {
+  async getSummary(userId: string, brandId: string, dayType?: string) {
     const user = await dashboardRepository.getUserWithCurrentBranch(userId, brandId);
 
     if (!user) {
@@ -36,7 +36,8 @@ export class DashboardService {
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
 
-    const [memberCheckIns, branchCheckInsToday, availableSessions, latestCheckIn] = await Promise.all([
+    const [sameDayUsers, memberCheckIns, branchCheckInsToday, availableSessions, latestCheckIn] = await Promise.all([
+      dayType ? dashboardRepository.countSameDayUsers(user.currentBranchId, dayType, startOfToday) : Promise.resolve(0),
       dashboardRepository.countMemberCheckIns(user.id, user.currentBranchId),
       dashboardRepository.countBranchCheckInsSince(user.currentBranchId, startOfToday),
       dashboardRepository.countAvailableSessionsSince(user.currentBranchId, startOfToday),
@@ -59,19 +60,20 @@ export class DashboardService {
       },
       branch: user.currentBranch,
       stats: {
-        xp: stats.xp,
+        xp: user.totalXp,
         streak: stats.streak,
         rank: stats.rank,
-        checkIns: memberCheckIns
+        checkIns: user.totalSessions
       },
       today: {
         activeMembers: stats.activeMembers,
         topMuscleGroup: stats.topMuscleGroup,
         checkInsToday: branchCheckInsToday,
-        availableSessions
+        availableSessions,
+        sameDayUsers
       },
       sessions: {
-        totalCheckIns: memberCheckIns,
+        totalCheckIns: user.totalSessions,
         checkedInToday: !!(latestCheckIn && latestCheckIn.checkedInAt >= startOfToday),
         lastCheckInTitle: latestCheckIn?.sessionOption.title ?? null,
         lastCheckInAt: latestCheckIn?.checkedInAt.toISOString() ?? null

@@ -9,7 +9,7 @@ import { branchesController } from "../modules/branches/controller/branches.cont
 import { branchParamsSchema } from "../modules/branches/validator/branches.validator";
 import { dashboardController } from "../modules/dashboard/controller/dashboard.controller";
 import { sessionsController } from "../modules/sessions/controller/sessions.controller";
-import { sessionParamsSchema } from "../modules/sessions/validator/sessions.validator";
+import { sessionParamsSchema, workoutCompleteSchema } from "../modules/sessions/validator/sessions.validator";
 import { usersController } from "../modules/users/controller/users.controller";
 import { selectBranchSchema } from "../modules/users/validator/users.validator";
 
@@ -74,6 +74,14 @@ export const registerRoutes = () => {
       params: sessionParamsSchema
     }),
     asyncHandler(sessionsController.checkIn)
+  );
+  router.post(
+    "/sessions/workout/complete",
+    requireAuth,
+    validate({
+      body: workoutCompleteSchema
+    }),
+    asyncHandler(sessionsController.completeWorkout)
   );
 
   return router;

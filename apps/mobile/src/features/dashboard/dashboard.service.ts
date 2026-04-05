@@ -68,8 +68,8 @@ const calculateStreak = (checkIns: CheckInRow[]) => {
   return streak;
 };
 
-export const getDashboardSummary = async (user: User): Promise<DashboardSummaryResponse> => {
-  const [{ data: checkInRows, error: checkInsError }, { data: xpRows, error: xpError }, { data: metricsRows, error: metricsError }] =
+export const getDashboardSummary = async (user: User, dayType?: string): Promise<DashboardSummaryResponse> => {
+  const [{ data: checkInRows, error: checkInsError }, { data: xpRows, error: xpError }, { data: metricsRows, error: metricsError }, dayUsersRes] =
     await Promise.all([
       supabase
         .from("check_ins")
@@ -78,7 +78,14 @@ export const getDashboardSummary = async (user: User): Promise<DashboardSummaryR
         .order("checked_in_at", { ascending: false })
         .returns<CheckInRow[]>(),
       supabase.from("xp_events").select("amount").eq("user_id", user.id).returns<XpEventRow[]>(),
-      supabase.rpc("get_gym_activity_metrics")
+      supabase.rpc("get_gym_activity_metrics"),
+      dayType
+        ? supabase
+            .from("WorkoutSession")
+            .select("id")
+            .eq("muscleGroup", dayType)
+            .gte("startedAt", getTodayUtcKey() + "T00:00:00.000Z")
+        : Promise.resolve({ data: [] as { id: string }[], error: null })
     ]);
 
   if (checkInsError) {
@@ -132,7 +139,8 @@ export const getDashboardSummary = async (user: User): Promise<DashboardSummaryR
       activeMembers: Number(metrics?.active_members ?? 0),
       featuredSessionTitle: metrics?.featured_session_title ?? null,
       checkInsToday: Number(metrics?.check_ins_today ?? 0),
-      availableSessions: Number(metrics?.available_sessions ?? 0)
+      availableSessions: Number(metrics?.available_sessions ?? 0),
+      sameDayUsers: dayUsersRes?.data?.length ?? 0
     },
     sessions: {
       totalCheckIns: safeCheckIns.length,

@@ -12,12 +12,27 @@ export const dashboardRepository = {
         fullName: true,
         email: true,
         currentBranchId: true,
+        level: true,
+        totalXp: true,
+        totalSessions: true,
         currentBranch: {
           select: {
             id: true,
             name: true,
             city: true
           }
+        }
+      }
+    });
+  },
+
+  countSameDayUsers(branchId: string, dayType: string, startsAt: Date) {
+    return prisma.workoutSession.count({
+      where: {
+        branchId,
+        muscleGroup: dayType,
+        startedAt: {
+          gte: startsAt
         }
       }
     });

@@ -10,6 +10,11 @@ const authUserSelect = {
   brandId: true,
   currentBranchId: true,
   role: true,
+  level: true,
+  totalXp: true,
+  totalSessions: true,
+  age: true,
+  avatarUrl: true,
   createdAt: true,
   updatedAt: true
 } satisfies Prisma.UserSelect;

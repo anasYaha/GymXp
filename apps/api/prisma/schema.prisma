@@ -58,6 +58,13 @@ model User {
   currentBranchId String?
   currentBranch   GymBranch?       @relation("CurrentBranchUsers", fields: [currentBranchId], references: [id])
   role            UserRole         @default(MEMBER)
+  
+  level           Int              @default(1)
+  totalXp         Int              @default(0)
+  totalSessions   Int              @default(0)
+  age             Int?
+  avatarUrl       String?
+
   sessions        WorkoutSession[]
   sessionAttendances SessionAttendance[]
   xpLogs          XPLog[]

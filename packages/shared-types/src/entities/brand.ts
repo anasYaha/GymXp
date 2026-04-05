@@ -24,6 +24,11 @@ export interface User {
   brandId: string | null;
   currentBranchId: string | null;
   role: UserRole;
+  level: number;
+  totalXp: number;
+  totalSessions: number;
+  age: number | null;
+  avatarUrl: string | null;
   createdAt: string;
   updatedAt: string;
 }

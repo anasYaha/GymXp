@@ -19,6 +19,7 @@ export interface DashboardSummaryResponse {
     featuredSessionTitle: string | null;
     checkInsToday: number;
     availableSessions: number;
+    sameDayUsers?: number;
   };
   sessions: {
     totalCheckIns: number;

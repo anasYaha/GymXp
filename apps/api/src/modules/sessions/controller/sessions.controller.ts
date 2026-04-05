@@ -5,7 +5,7 @@ import { SessionsService } from "../service/sessions.service";
 
 const sessionsService = new SessionsService();
 
-export const sessionsController: Record<"listAvailable" | "listMine" | "checkIn", RequestHandler> = {
+export const sessionsController: Record<"listAvailable" | "listMine" | "checkIn" | "completeWorkout", RequestHandler> = {
   async listAvailable(request, response) {
     const result = await sessionsService.listAvailableSessions({
       userId: request.context!.userId,
@@ -34,6 +34,18 @@ export const sessionsController: Record<"listAvailable" | "listMine" | "checkIn"
         branchId: request.context!.branchId
       },
       sessionOptionId
+    );
+
+    return sendOk(response, result, 201);
+  },
+
+  async completeWorkout(request, response) {
+    const result = await sessionsService.completeWorkout(
+      {
+        userId: request.context!.userId,
+        branchId: request.context!.branchId
+      },
+      request.body.muscleGroup
     );
 
     return sendOk(response, result, 201);

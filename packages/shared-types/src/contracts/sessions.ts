@@ -40,3 +40,13 @@ export interface CreateSessionRequest {
 export interface CompleteSessionRequest {
   endedAt: string;
 }
+
+export interface CompleteWorkoutRequest {
+  muscleGroup: string;
+}
+
+export interface CompleteWorkoutResponse {
+  level: number;
+  totalXp: number;
+  totalSessions: number;
+}

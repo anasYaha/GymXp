@@ -128,5 +128,55 @@ export const sessionsRepository = {
       },
       select: sessionAttendanceSelect
     });
+  },
+
+  findCompletedWorkoutToday(userId: string, branchId: string, muscleGroup: string, startOfToday: Date) {
+    return prisma.workoutSession.findFirst({
+      where: {
+        userId,
+        branchId,
+        muscleGroup,
+        status: "COMPLETED",
+        startedAt: { gte: startOfToday }
+      }
+    });
+  },
+
+  async completeWorkoutRoutine(
+    userId: string,
+    branchId: string,
+    muscleGroup: string,
+    newTotalXp: number,
+    newTotalSessions: number,
+    newLevel: number
+  ) {
+    return prisma.$transaction([
+      prisma.workoutSession.create({
+        data: {
+          userId,
+          branchId,
+          muscleGroup,
+          startedAt: new Date(),
+          endedAt: new Date(),
+          status: "COMPLETED"
+        }
+      }),
+      prisma.xPLog.create({
+        data: {
+          userId,
+          branchId,
+          amount: 100,
+          reason: `Completed ${muscleGroup} Workout`
+        }
+      }),
+      prisma.user.update({
+        where: { id: userId },
+        data: {
+          totalXp: newTotalXp,
+          totalSessions: newTotalSessions,
+          level: newLevel
+        }
+      })
+    ]);
   }
 };

@@ -1,11 +1,14 @@
 import type {
   MemberSession,
   SessionCheckInResponse,
-  SessionListResponse
+  SessionListResponse,
+  CompleteWorkoutRequest,
+  CompleteWorkoutResponse
 } from "@gymxp/shared-types/contracts/sessions";
 
 import { getCurrentAuthUserId } from "../../lib/member-data";
 import { supabase } from "../../lib/supabase";
+import { apiClient } from "../../services/api/api-client";
 
 type SessionRow = {
   id: string;
@@ -133,4 +136,8 @@ export const checkInToSession = async (sessionId: string): Promise<SessionCheckI
     },
     xpAwarded: result.xp_awarded
   };
+};
+
+export const completeWorkoutRoutine = async (muscleGroup: string): Promise<CompleteWorkoutResponse> => {
+  return apiClient.post<CompleteWorkoutResponse>("/sessions/workout/complete", { muscleGroup });
 };

@@ -10,11 +10,16 @@ type ProfileRow = {
   email: string | null;
   full_name: string | null;
   role: string | null;
+  level: number | null;
+  totalXp: number | null;
+  totalSessions: number | null;
+  age: number | null;
+  avatar_url: string | null;
   created_at: string | null;
   updated_at: string | null;
 };
 
-const PROFILE_SELECT = "id, email, full_name, role, created_at, updated_at";
+const PROFILE_SELECT = "id, email, full_name, role, level, totalXp, totalSessions, age, avatar_url, created_at, updated_at";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -59,6 +64,11 @@ const mapProfileUser = (authUser: SupabaseAuthUser, profile: ProfileRow | null):
   const updatedAt = profile?.updated_at ?? authUser.updated_at ?? createdAt;
 
   return {
+    level: profile?.level ?? 1,
+    totalXp: profile?.totalXp ?? 0,
+    totalSessions: profile?.totalSessions ?? 0,
+    age: profile?.age ?? null,
+    avatarUrl: profile?.avatar_url ?? null,
     id: authUser.id,
     fullName,
     email: authUser.email ?? profile?.email ?? "",

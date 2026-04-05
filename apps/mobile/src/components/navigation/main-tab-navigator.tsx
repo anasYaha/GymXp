@@ -11,6 +11,7 @@ import { MachinesScreen } from "../../screens/machines/machines-screen";
 import { CoachingScreen } from "../../screens/coaching/coaching-screen";
 import { ExploreScreen } from "../../screens/explore/explore-screen";
 import { SessionCreateScreen } from "../../screens/sessions/session-create-screen";
+import { ProfileScreen } from "../../screens/profile/profile-screen";
 
 type TabScreen =
   | "home"
@@ -23,6 +24,7 @@ type TabScreen =
   | "community"
   | "machines"
   | "coaching"
+  | "profile"
   | "explore";
 
 interface MainTabNavigatorProps {
@@ -43,6 +45,7 @@ const MORE_TABS = [
   { key: "community" as const, icon: "💬", label: "Community" },
   { key: "machines" as const, icon: "🔧", label: "Machines" },
   { key: "coaching" as const, icon: "👨‍🏫", label: "Coach" },
+  { key: "profile" as const, icon: "👤", label: "Profile" },
 ];
 
 export const MainTabNavigator = ({ homeScreen }: MainTabNavigatorProps) => {
@@ -86,6 +89,7 @@ export const MainTabNavigator = ({ homeScreen }: MainTabNavigatorProps) => {
       case "community": return <CommunityScreen />;
       case "machines": return <MachinesScreen />;
       case "coaching": return <CoachingScreen />;
+      case "profile": return <ProfileScreen />;
       case "explore": return <ExploreScreen onNavigate={handleExploreNavigate} />;
       default: return React.isValidElement(homeScreen) 
       ? React.cloneElement(homeScreen as React.ReactElement<any>, { onNavigateToSession: () => setActiveTab("session-create") })

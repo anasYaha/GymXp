@@ -7,6 +7,11 @@ export const mapAuthUser = (input: AuthUserRecord) => ({
   brandId: input.brandId,
   currentBranchId: input.currentBranchId,
   role: input.role,
+  level: input.level,
+  totalXp: input.totalXp,
+  totalSessions: input.totalSessions,
+  age: input.age,
+  avatarUrl: input.avatarUrl,
   createdAt: input.createdAt.toISOString(),
   updatedAt: input.updatedAt.toISOString()
 });
