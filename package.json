@@ -15,6 +15,7 @@
     "start:api": "pnpm --filter @gymxp/api start",
     "build": "pnpm -r build",
     "build:api": "pnpm --filter @gymxp/api build",
+    "build:api:ci": "pnpm --filter @gymxp/api prisma:generate && pnpm --filter @gymxp/api build",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck",
     "test:dev-a": "node scripts/test-dev-a.mjs",
