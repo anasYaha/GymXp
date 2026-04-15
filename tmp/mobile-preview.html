@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GymXP Mobile Preview</title>
+  <style>
+    :root {
+      --ink: #102a26;
+      --pine: #144e45;
+      --gold: #f4b942;
+      --cream: #f6f5f0;
+      --card: #fffdf7;
+      --line: rgba(16, 42, 38, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at top right, rgba(244,185,66,.18), transparent 24rem),
+        linear-gradient(180deg, #fbfaf6, #f1efe6);
+      color: var(--ink);
+    }
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+    .hero {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-size: 12px;
+      color: var(--pine);
+      font-weight: 700;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1;
+    }
+    .sub {
+      max-width: 760px;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .phone, .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 18px 50px rgba(16, 42, 38, 0.08);
+      overflow: hidden;
+    }
+    .phone-head, .panel-head {
+      padding: 18px 20px;
+      background: linear-gradient(135deg, var(--pine), #1b6b60);
+      color: white;
+    }
+    .phone-body, .panel-body {
+      padding: 20px;
+    }
+    .section {
+      margin-bottom: 18px;
+    }
+    .section:last-child {
+      margin-bottom: 0;
+    }
+    .section h2, .section h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .muted {
+      color: rgba(16, 42, 38, 0.72);
+    }
+    .pill {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(20, 78, 69, 0.08);
+      color: var(--pine);
+      font-weight: 700;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    .cards {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .card {
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffefb, #f8f4e9);
+    }
+    .card .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: rgba(16, 42, 38, 0.7);
+    }
+    .card .value {
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    li:last-child { border-bottom: 0; }
+    .route {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .active {
+      background: var(--gold);
+      color: var(--ink);
+    }
+    code {
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+    }
+    .footer {
+      margin-top: 28px;
+      font-size: 14px;
+      color: rgba(16, 42, 38, 0.76);
+    }
+    @media (max-width: 720px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">GymXP Preview Tool</div>
+      <h1>Member App Visual Preview</h1>
+      <div class="sub">
+        This is a local HTML preview generated from the current Developer A scaffold. It helps you
+        see the intended frontend structure even though the mobile app is not yet a full Expo-rendered UI.
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="phone">
+        <div class="phone-head">
+          <div class="eyebrow" style="color:#f8e7a7;">Member Flow</div>
+          <h2 style="margin:8px 0 0;">Login → Branch → Dashboard</h2>
+        </div>
+        <div class="phone-body">
+          <div class="section">
+            <h3>Current route logic</h3>
+            <div class="route">
+              <span class="pill">login</span>
+              <span class="pill active">onboarding-branch</span>
+              <span class="pill">dashboard-home</span>
+            </div>
+          </div>
+          <div class="section">
+            <h3>Select branch</h3>
+            <ul>
+              <li><strong>Gym City Tunis</strong><br/><span class="muted">Tunis</span></li><li><strong>Gym City Sousse</strong><br/><span class="muted">Sousse</span></li><li><strong>Gym City Lac</strong><br/><span class="muted">Tunis</span></li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Dashboard snapshot</h3>
+            <div class="card">
+              <div class="label">Active Branch</div>
+              <div class="value" style="font-size:22px;">Gym City Sousse</div>
+              <div class="muted">Sousse</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="eyebrow" style="color:#f8e7a7;">Dashboard</div>
+          <h2 style="margin:8px 0 0;">Ali's Branch Summary</h2>
+        </div>
+        <div class="panel-body">
+          <div class="section">
+            <div class="cards">
+              <div class="card">
+                <div class="label">XP</div>
+                <div class="value">420</div>
+              </div>
+              <div class="card">
+                <div class="label">Streak</div>
+                <div class="value">6</div>
+              </div>
+              <div class="card">
+                <div class="label">Rank</div>
+                <div class="value">3</div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <h3>Today in this branch</h3>
+            <div class="pill">27 active members</div>
+            <div class="pill">Peak 18:00-20:00</div>
+          </div>
+          <div class="section">
+            <h3>Recent sessions</h3>
+            <ul>
+              <li><strong>CHEST</strong><br/><span class="muted">2026-03-29 09:00 · COMPLETED</span></li><li><strong>LEGS</strong><br/><span class="muted">2026-03-28 17:30 · COMPLETED</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="eyebrow" style="color:#f8e7a7;">Leaderboard</div>
+          <h2 style="margin:8px 0 0;">Gym City Sousse</h2>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><strong>#1 Karim Tlili</strong><br/><span class="muted">980 XP</span></li><li><strong>#2 Samia Jaziri</strong><br/><span class="muted">870 XP</span></li><li><strong>#3 Ali Ben Salah</strong><br/><span class="muted">420 XP</span></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">
+      Generated file: <code>C:\Users\anasy\Desktop\GameXp\GymXp\tmp\mobile-preview.html</code><br/>
+      Run again with <code>node scripts/render-mobile-preview.mjs</code> or <code>npm run preview:mobile</code>.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,554 @@
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#FF6B00;--bg:#0B0B0B;--card:#1A1A1A;--card2:#222;--border:#2a2a2a;--white:#FFF;--muted:#AAA;--neon:#A3FF12}
+body{display:flex;flex-direction:column;align-items:center;min-height:100vh;background:#111;font-family:'Barlow',sans-serif;color:var(--white);padding:24px 0}
+h1,h2,h3,.hdg{font-family:'Barlow Condensed',sans-serif;font-weight:900;text-transform:uppercase}
+.app-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:32px;color:var(--orange);text-transform:uppercase;letter-spacing:2px}
+.app-sub{color:var(--muted);font-size:13px;margin-top:4px;text-align:center}
+.phone{width:390px;height:780px;background:#000;border-radius:46px;border:4px solid #1a1a1a;overflow:hidden;position:relative;margin-top:16px}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:160px;height:34px;background:#000;border-radius:0 0 20px 20px;z-index:100}
+.phone-inner{width:100%;height:100%;overflow:hidden;position:relative;border-radius:42px}
+.pages-rail{display:flex;flex-direction:row;height:100%;transition:transform .45s cubic-bezier(.77,0,.18,1)}
+.page{min-width:390px;width:390px;height:100%;display:flex;flex-direction:column;background:var(--bg)}
+.page-scroll{flex:1;overflow-y:auto;padding:52px 16px 86px;scrollbar-width:none;-ms-overflow-style:none}
+.page-scroll::-webkit-scrollbar{display:none}
+.bottom-nav{position:absolute;bottom:0;left:0;right:0;height:70px;background:rgba(11,11,11,.95);border-top:1px solid var(--border);display:flex;flex-direction:row;align-items:center;justify-content:space-around;z-index:90;backdrop-filter:blur(12px)}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--muted);font-size:10px;font-weight:700;cursor:pointer;padding:6px 8px;font-family:'Barlow',sans-serif}
+.nav-btn.active{color:var(--orange)}
+.nav-btn .ico{font-size:20px}
+.dots{display:flex;gap:6px;margin-top:14px;align-items:center}
+.dot{width:10px;height:10px;border-radius:999px;background:#333;cursor:pointer;transition:all .3s}
+.dot.active{background:var(--orange);width:32px}
+.page-label{color:var(--muted);font-size:12px;margin-top:8px;font-weight:600}
+/* Cards */
+.crd{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
+.crd2{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;color:var(--white);display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.sec-title .see{color:var(--orange);font-family:'Barlow',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase}
+.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--white)}
+.xp-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px}
+.xp-fill{height:100%;background:var(--neon);border-radius:3px}
+.hero-card{background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.2);border-radius:14px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.hero-card::after{content:'';position:absolute;right:-30px;top:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,107,0,.06)}
+.badge-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.badge-row::-webkit-scrollbar{display:none}
+.badge-item{min-width:60px;text-align:center;font-size:10px;color:var(--muted);font-weight:600}
+.badge-item .emoji{font-size:24px;display:block;margin-bottom:2px}
+/* Grid */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.stat-grid .crd{text-align:center;padding:12px 8px}
+.stat-grid .crd .stat-val{font-size:22px}
+.stat-grid .crd .lab{font-size:10px;color:var(--muted);font-weight:600;margin-top:2px}
+/* Workout cards */
+.wk-card{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:8px}
+.wk-card .ico2{font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--card2);border-radius:10px}
+.wk-card .wk-info{flex:1}
+.wk-card .wk-info .nm{font-weight:700;font-size:14px}
+.wk-card .wk-info .mg{font-size:11px;color:var(--muted)}
+.wk-badge{font-size:10px;font-weight:800;padding:4px 8px;border-radius:8px;text-transform:uppercase}
+.wk-badge.start{background:var(--orange);color:#fff}
+.wk-badge.pending{background:var(--card2);color:var(--muted)}
+/* Train page */
+.day-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;scrollbar-width:none}
+.day-tabs::-webkit-scrollbar{display:none}
+.day-tab{padding:8px 14px;border-radius:10px;background:var(--card2);color:var(--muted);font-weight:700;font-size:12px;white-space:nowrap;cursor:pointer;border:1px solid var(--border)}
+.day-tab.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.ex-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.ex-row:last-child{border-bottom:none}
+.ex-circle{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px}
+.ex-circle.done{border-color:var(--neon);color:var(--neon)}
+.ex-name{flex:1;font-size:13px;font-weight:600}
+.set-pills{display:flex;gap:4px}
+.set-pill{width:22px;height:22px;border-radius:6px;background:var(--card2);border:1px solid var(--border);font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted)}
+.set-pill.logged{background:var(--orange);color:#fff;border-color:var(--orange)}
+.btn-orange{width:100%;padding:14px;border:none;border-radius:12px;background:var(--orange);color:#fff;font-size:15px;font-weight:800;text-transform:uppercase;cursor:pointer;letter-spacing:1px;margin-top:12px;font-family:'Barlow Condensed',sans-serif}
+/* Progress / Charts */
+.chart-card{margin-bottom:12px}
+.chart-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.chart-top .big{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--orange)}
+.chart-top .delta{color:var(--neon);font-size:12px;font-weight:700}
+.bars{display:flex;align-items:flex-end;gap:4px;height:80px}
+.bars .bar{flex:1;background:var(--card2);border-radius:4px 4px 0 0;min-width:0}
+.bars .bar.peak{background:var(--orange)}
+.bar-labels{display:flex;gap:4px;margin-top:4px}
+.bar-labels span{flex:1;text-align:center;font-size:9px;color:var(--muted)}
+.meas-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.meas-grid .crd .lab{font-size:11px;color:var(--muted);font-weight:600}
+.meas-grid .crd .val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900}
+.meas-grid .crd .dlt{font-size:11px;font-weight:700}
+.dlt.up{color:var(--neon)}
+.dlt.down{color:var(--orange)}
+/* Rewards */
+.avatar-sec{text-align:center;margin-bottom:16px}
+.avatar-circle{width:80px;height:80px;border-radius:50%;border:3px solid var(--orange);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 8px;background:var(--card)}
+.lvl-badge{display:inline-block;background:var(--orange);color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:8px;text-transform:uppercase}
+.xp-big{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--neon);margin:6px 0 2px}
+.badge-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.badge-grid .b{text-align:center;padding:10px 4px;border-radius:12px;border:1px solid var(--border);background:var(--card);font-size:9px;font-weight:700;color:var(--muted)}
+.badge-grid .b.earned{border-color:var(--orange);color:var(--orange)}
+.badge-grid .b .emoji{font-size:22px;display:block;margin-bottom:2px}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;margin-bottom:6px;background:var(--card);border:1px solid var(--border)}
+.lb-row.me{border-color:var(--orange);background:rgba(255,107,0,.08)}
+.lb-rank{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;width:24px}
+.lb-av{width:32px;height:32px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:16px}
+.lb-info{flex:1}
+.lb-info .nm{font-size:13px;font-weight:700}
+.lb-info .lv{font-size:10px;color:var(--muted)}
+.lb-xp{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--neon)}
+/* Nutrition */
+.input-group{margin-bottom:10px}
+.input-group label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.input-group input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--white);font-size:14px;font-family:'Barlow',sans-serif}
+.toggle-row{display:flex;gap:6px;margin-bottom:12px}
+.toggle-btn{flex:1;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--card2);color:var(--muted);text-align:center;font-weight:700;font-size:12px;cursor:pointer;font-family:'Barlow',sans-serif}
+.toggle-btn.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.result-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.result-row:last-child{border-bottom:none}
+.result-row .rlbl{flex:1;font-size:13px;font-weight:600;color:var(--muted)}
+.result-row .rval{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;min-width:60px;text-align:right}
+.result-bar{height:6px;flex:2;background:var(--border);border-radius:3px;overflow:hidden}
+.result-bar .fill{height:100%;border-radius:3px}
+.fill.cal{background:var(--orange)}
+.fill.pro{background:var(--neon)}
+.fill.carb{background:#FF9E40}
+.fill.fat{background:#555}
+/* Chat */
+.room-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.room-tabs::-webkit-scrollbar{display:none}
+.room-tab{padding:8px 14px;border-radius:10px;background:var(--card2);color:var(--muted);font-weight:700;font-size:12px;white-space:nowrap;cursor:pointer;border:1px solid var(--border)}
+.room-tab.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.chat-area{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.bubble{max-width:80%;padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.4}
+.bubble .bname{font-size:11px;font-weight:700;margin-bottom:2px}
+.bubble .btime{font-size:9px;color:var(--muted);margin-top:3px}
+.bubble.other{background:var(--card);border:1px solid var(--border);align-self:flex-start}
+.bubble.other .bname{color:var(--orange)}
+.bubble.me{background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.2);align-self:flex-end}
+.bubble.me .bname{color:var(--orange)}
+.chat-input{display:flex;gap:8px;align-items:center}
+.chat-input input{flex:1;padding:10px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card2);color:var(--white);font-size:13px;font-family:'Barlow',sans-serif}
+.send-btn{width:38px;height:38px;border-radius:50%;background:var(--orange);border:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+/* Machines */
+.search-bar{position:relative;margin-bottom:12px}
+.search-bar input{width:100%;padding:10px 12px 10px 36px;border-radius:12px;border:1px solid var(--border);background:var(--card2);color:var(--white);font-size:13px;font-family:'Barlow',sans-serif}
+.search-bar .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted)}
+.filter-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.filter-tabs::-webkit-scrollbar{display:none}
+.ftab{padding:7px 12px;border-radius:10px;background:var(--card2);color:var(--muted);font-weight:700;font-size:11px;white-space:nowrap;cursor:pointer;border:1px solid var(--border)}
+.ftab.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.machine-card{display:flex;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:8px}
+.machine-card .m-ico{width:56px;height:56px;background:var(--card2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px}
+.machine-card .m-info{flex:1}
+.machine-card .m-info .m-name{font-weight:700;font-size:14px}
+.machine-card .m-info .m-muscles{font-size:11px;color:var(--orange);font-weight:600;margin-top:2px}
+.machine-card .m-info .m-count{font-size:10px;color:var(--muted);margin-top:2px}
+.chip-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.chip{padding:3px 8px;border-radius:8px;background:var(--card2);color:var(--muted);font-size:10px;font-weight:600}
+/* Coach */
+.coach-hero{text-align:center;margin-bottom:12px}
+.coach-av{width:72px;height:72px;border-radius:50%;border:3px solid var(--orange);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 8px;background:var(--card)}
+.coach-name{font-size:18px;font-weight:800}
+.coach-title{font-size:12px;color:var(--muted)}
+.coach-meta{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:4px;font-size:12px}
+.coach-meta .star{color:var(--orange)}
+.coach-meta .online{color:var(--neon);font-weight:700}
+.online-dot{width:8px;height:8px;border-radius:50%;background:var(--neon);display:inline-block;margin-right:3px}
+.week-plan .day-row{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px}
+.week-plan .day-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--border)}
+.week-plan .day-dot.done{background:var(--neon);border-color:var(--neon)}
+/* Explore */
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.quick-grid .qc{border-radius:14px;padding:16px 12px;text-align:center;font-weight:800;font-size:14px;cursor:pointer;border:1px solid var(--border)}
+.qc.t1{background:rgba(255,107,0,.12);color:var(--orange)}
+.qc.t2{background:rgba(163,255,18,.08);color:var(--neon)}
+.qc.t3{background:var(--card);color:var(--white)}
+.qc.t4{background:rgba(255,107,0,.06);color:var(--orange)}
+.edu-banner{background:linear-gradient(135deg,rgba(255,107,0,.2),rgba(255,107,0,.05));border:1px solid rgba(255,107,0,.2);border-radius:14px;padding:18px;margin-bottom:14px}
+.edu-banner .ebt{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;text-transform:uppercase}
+.edu-banner .ebs{font-size:12px;color:var(--muted);margin-top:4px}
+.article-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:10px}
+.article-card .a-img{height:80px;display:flex;align-items:center;justify-content:center;font-size:36px}
+.a-img.c1{background:rgba(255,107,0,.12)}
+.a-img.c2{background:rgba(163,255,18,.08)}
+.a-img.c3{background:rgba(255,158,64,.1)}
+.article-card .a-body{padding:12px}
+.article-card .a-tag{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;margin-bottom:4px}
+.article-card .a-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.article-card .a-meta{font-size:10px;color:var(--muted)}
+.hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.hdr .greeting{font-size:14px;font-weight:600;color:var(--muted)}
+.hdr .greeting b{color:var(--white)}
+.notif{width:32px;height:32px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;position:relative}
+.notif .ndot{position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;background:var(--orange)}
+.streak-banner{border:1px solid var(--neon);border-radius:14px;padding:12px;margin-bottom:12px;background:rgba(163,255,18,.04);display:flex;gap:10px;align-items:center}
+.streak-banner .sinfo{flex:1;font-size:12px;color:var(--muted);font-weight:600}
+.streak-banner .sinfo b{color:var(--neon);font-size:14px}
+.streak-banner .sreward{font-size:10px;color:var(--neon);font-weight:700}
+.chat-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.chat-hdr .mcount{font-size:11px;color:var(--muted);font-weight:600}
+</style>
+
+<div class="app-title">IRONCORE</div>
+<div class="app-sub">Gym App — UI Prototype · Swipe or tap nav</div>
+
+<div class="phone" id="phone">
+  <div class="notch"></div>
+  <div class="phone-inner">
+    <div class="pages-rail" id="rail">
+
+      <!-- PAGE 1: HOME -->
+      <div class="page">
+        <div class="page-scroll">
+          <div class="hdr">
+            <div class="greeting">Good evening, <b>Alex</b></div>
+            <div class="notif">🔔<span class="ndot"></span></div>
+          </div>
+          <div class="hero-card">
+            <div style="font-size:11px;color:var(--orange);font-weight:700;text-transform:uppercase;letter-spacing:1px">IRON WARRIOR</div>
+            <div style="font-size:22px;font-weight:800;margin:4px 0" class="hdg">LEVEL 24 · IRON WARRIOR</div>
+            <div style="font-size:12px;color:var(--muted)">Avatar Skin: Shadow Titan</div>
+            <div class="xp-bar" style="margin-top:8px"><div class="xp-fill" style="width:72%"></div></div>
+            <div style="font-size:10px;color:var(--neon);margin-top:3px">2,840 / 4,000 XP</div>
+          </div>
+          <div class="stat-grid">
+            <div class="crd" style="border-color:var(--orange)"><div class="stat-val" style="color:var(--orange)">14</div><div class="lab">🔥 Streak</div></div>
+            <div class="crd"><div class="stat-val">38</div><div class="lab">Sessions</div></div>
+            <div class="crd"><div class="stat-val" style="color:var(--neon)">92%</div><div class="lab">Performance</div></div>
+          </div>
+          <div class="streak-banner">
+            <div style="font-size:28px">🔥</div>
+            <div class="sinfo"><b>14-day streak!</b><br>Keep going — next reward at 21 days</div>
+            <div class="sreward">🎁 Unlock</div>
+          </div>
+          <div class="sec-title">Today's Workout <span class="see">See All</span></div>
+          <div class="wk-card"><div class="ico2">🏋️</div><div class="wk-info"><div class="nm">Push Day</div><div class="mg">Chest · Shoulders · Triceps</div></div><span class="wk-badge start">START</span></div>
+          <div class="wk-card"><div class="ico2">🦵</div><div class="wk-info"><div class="nm">Leg Blast</div><div class="mg">Quads · Hamstrings · Glutes</div></div><span class="wk-badge pending">PENDING</span></div>
+          <div class="wk-card"><div class="ico2">💪</div><div class="wk-info"><div class="nm">Arms & Core</div><div class="mg">Biceps · Abs · Forearms</div></div><span class="wk-badge pending">PENDING</span></div>
+          <div class="sec-title" style="margin-top:6px">Badges <span class="see">See All</span></div>
+          <div class="badge-row">
+            <div class="badge-item"><span class="emoji">🏆</span>Champion</div>
+            <div class="badge-item"><span class="emoji">🔥</span>On Fire</div>
+            <div class="badge-item"><span class="emoji">💎</span>Diamond</div>
+            <div class="badge-item"><span class="emoji">⚡</span>Lightning</div>
+            <div class="badge-item"><span class="emoji">🎯</span>Sniper</div>
+            <div class="badge-item"><span class="emoji">🦁</span>Beast</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 2: TRAINING PLAN -->
+      <div class="page">
+        <div class="page-scroll">
+          <div class="sec-title" style="margin-bottom:4px">Training Plan</div>
+          <div class="crd">
+            <div style="font-weight:800;font-size:16px" class="hdg">PUSH PULL LEGS PRO</div>
+            <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+              <span style="padding:3px 8px;border-radius:8px;background:var(--card2);color:var(--muted);font-size:10px;font-weight:700">Week 4</span>
+              <span style="padding:3px 8px;border-radius:8px;background:var(--card2);color:var(--muted);font-size:10px;font-weight:700">5x/week</span>
+              <span style="padding:3px 8px;border-radius:8px;background:rgba(255,107,0,.15);color:var(--orange);font-size:10px;font-weight:700">Advanced</span>
+            </div>
+          </div>
+          <div class="day-tabs">
+            <div class="day-tab active">MON</div><div class="day-tab">TUE</div><div class="day-tab">WED</div><div class="day-tab">THU</div><div class="day-tab">FRI</div><div class="day-tab">SAT</div>
+          </div>
+          <div class="crd">
+            <div class="ex-row"><div class="ex-circle done">✓</div><div class="ex-name">Bench Press</div><div class="set-pills"><div class="set-pill logged">1</div><div class="set-pill logged">2</div><div class="set-pill logged">3</div><div class="set-pill">4</div></div></div>
+            <div class="ex-row"><div class="ex-circle done">✓</div><div class="ex-name">Incline DB Press</div><div class="set-pills"><div class="set-pill logged">1</div><div class="set-pill logged">2</div><div class="set-pill">3</div><div class="set-pill">4</div></div></div>
+            <div class="ex-row"><div class="ex-circle"></div><div class="ex-name">OHP</div><div class="set-pills"><div class="set-pill">1</div><div class="set-pill">2</div><div class="set-pill">3</div></div></div>
+            <div class="ex-row"><div class="ex-circle"></div><div class="ex-name">Lateral Raises</div><div class="set-pills"><div class="set-pill">1</div><div class="set-pill">2</div><div class="set-pill">3</div><div class="set-pill">4</div></div></div>
+            <div class="ex-row"><div class="ex-circle"></div><div class="ex-name">Tricep Pushdown</div><div class="set-pills"><div class="set-pill">1</div><div class="set-pill">2</div><div class="set-pill">3</div></div></div>
+          </div>
+          <button class="btn-orange">START SESSION</button>
+        </div>
+      </div>
+
+      <!-- PAGE 3: PROGRESS -->
+      <div class="page">
+        <div class="page-scroll">
+          <div class="sec-title">Progress</div>
+          <div class="crd chart-card">
+            <div class="chart-top"><div><div style="font-size:12px;color:var(--muted);font-weight:600">Body Weight</div></div><div style="text-align:right"><div class="big">78.4 kg</div><div class="delta">▲ 1.2 kg</div></div></div>
+            <div class="bars"><div class="bar" style="height:50%"></div><div class="bar" style="height:60%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:70%"></div><div class="bar peak" style="height:85%"></div><div class="bar" style="height:80%"></div></div>
+            <div class="bar-labels"><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
+          </div>
+          <div class="crd chart-card">
+            <div class="chart-top"><div><div style="font-size:12px;color:var(--muted);font-weight:600">Bench Press 1RM</div></div><div style="text-align:right"><div class="big">105 kg</div><div class="delta">▲ 7.5 kg</div></div></div>
+            <div class="bars"><div class="bar" style="height:40%"></div><div class="bar" style="height:50%"></div><div class="bar" style="height:60%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:75%"></div><div class="bar peak" style="height:90%"></div></div>
+            <div class="bar-labels"><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
+          </div>
+          <div class="sec-title">Measurements</div>
+          <div class="meas-grid">
+            <div class="crd"><div class="lab">Chest</div><div class="val">104 cm</div><div class="dlt up">▲ 1.5</div></div>
+            <div class="crd"><div class="lab">Waist</div><div class="val">82 cm</div><div class="dlt down">▼ 2.0</div></div>
+            <div class="crd"><div class="lab">Arms</div><div class="val">38 cm</div><div class="dlt up">▲ 0.8</div></div>
+            <div class="crd"><div class="lab">Thighs</div><div class="val">61 cm</div><div class="dlt up">▲ 1.2</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 4: REWARDS + LEADERBOARD -->
+      <div class="page">
+        <div class="page-scroll">
+          <div class="sec-title">Rewards & Leaderboard</div>
+          <div class="avatar-sec">
+            <div class="avatar-circle">🦁</div>
+            <div class="lvl-badge">Level 24</div>
+            <div class="xp-big">2,840 XP</div>
+            <div class="xp-bar"><div class="xp-fill" style="width:71%"></div></div>
+          </div>
+          <div class="sec-title">Badges <span class="see">See All</span></div>
+          <div class="badge-grid">
+            <div class="b earned"><span class="emoji">🏆</span>Champion</div>
+            <div class="b earned"><span class="emoji">🔥</span>On Fire</div>
+            <div class="b earned"><span class="emoji">💎</span>Diamond</div>
+            <div class="b earned"><span class="emoji">⚡</span>Electric</div>
+            <div class="b"><span class="emoji">🎯</span>Sniper</div>
+            <div class="b"><span class="emoji">🦁</span>Beast</div>
+            <div class="b"><span class="emoji">🌟</span>Star</div>
+            <div class="b"><span class="emoji">👑</span>King</div>
+          </div>
+          <div class="sec-title">Leaderboard <span class="see">This Week</span></div>
+          <div class="lb-row"><div class="lb-rank">1</div><div class="lb-av">🧔</div><div class="lb-info"><div class="nm">Mike Steel</div><div class="lv">Level 28</div></div><div class="lb-xp">4,120</div></div>
+          <div class="lb-row"><div class="lb-rank">2</div><div class="lb-av">💪</div><div class="lb-info"><div class="nm">Sara Power</div><div class="lv">Level 26</div></div><div class="lb-xp">3,890</div></div>
+          <div class="lb-row me"><div class="lb-rank" style="color:var(--orange)">3</div><div class="lb-av">🦁</div><div class="lb-info"><div class="nm" style="color:var(--orange)">You</div><div class="lv">Level 24</div></div><div class="lb-xp">2,840</div></div>
+          <div class="lb-row"><div class="lb-rank">4</div><div class="lb-av">🏋️</div><div class="lb-info"><div class="nm">Jake Iron</div><div class="lv">Level 22</div></div><div class="lb-xp">2,450</div></div>
+          <div class="lb-row"><div class="lb-rank">5</div><div class="lb-av">🔥</div><div class="lb-info"><div class="nm">Lena Blaze</div><div class="lv">Level 21</div></div><div class="lb-xp">2,280</div></div>
+        </div>
+      </div>
+
+      <!-- PAGE 5: NUTRITION CALCULATOR -->
+      <div class="page">
+        <div class="page-scroll">
+          <div class="sec-title">Nutrition Calculator</div>
+          <div class="crd">
+            <div class="input-group"><label>Weight (kg)</label><input type="number" id="nc-weight" value="80"></div>
+            <div class="input-group"><label>Height (cm)</label><input type="number" id="nc-height" value="178"></div>
+            <div class="input-group"><label>Age</label><input type="number" id="nc-age" value="27"></div>
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin:8px 0 4px">Gender</div>
+            <div class="toggle-row" id="gender-toggle">
+              <div class="toggle-btn active" data-val="male">Male</div>
+              <div class="toggle-btn" data-val="female">Female</div>
+            </div>
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin:8px 0 4px">Goal</div>
+            <div class="toggle-row" id="goal-toggle">
+              <div class="toggle-btn" data-val="cut">✂ Cut</div>
+              <div class="toggle-btn active" data-val="maintain">= Maintain</div>
+              <div class="toggle-btn" data-val="bulk">💪 Bulk</div>
+            </div>
+            <button class="btn-orange" onclick="calcNutrition()">CALCULATE</button>
+          </div>
+          <div class="crd" id="nutrition-results" style="display:none">
+            <div class="sec-title">Your Daily Targets</div>
+            <div id="results-body"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 6: COMMUNITY CHAT -->
+      <div class="page">
+        <div class="page-scroll">
+          <div class="chat-hdr">
+            <div class="hdg" style="font-size:18px;flex:1">COMMUNITY</div>
+            <div class="mcount">142 members</div>
+            <div class="notif" style="width:28px;height:28px;font-size:12px">🔔<span class="ndot"></span></div>
+          </div>
+          <div class="room-tabs">
+            <div class="room-tab active">General</div><div class="room-tab">Nutrition</div><div class="room-tab">Challenges</div><div class="room-tab">Science</div>
+          </div>
+          <div class="chat-area">
+            <div class="bubble other"><div class="bname">Mike Steel</div>Just hit a PR on deadlifts today! 220kg 🔥<div class="btime">2:34 PM</div></div>
+            <div class="bubble me"><div class="bname">You</div>That's insane bro! What program are you running?<div class="btime">2:35 PM</div></div>
+            <div class="bubble other"><div class="bname">Sara Power</div>Nice one Mike! I'm still stuck at 160kg 😅<div class="btime">2:36 PM</div></div>
+            <div class="bubble me"><div class="bname">You</div>Sara you'll get there! Consistency is key 💪<div class="btime">2:37 PM</div></div>
+            <div class="bubble other"><div class="bname">Jake Iron</div>Anyone else doing the 30-day challenge? Day 14 here 🎯<div class="btime">2:40 PM</div></div>
+          </div>
+          <div class="chat-input"><input type="text" placeholder="Type a message..."><button class="send-btn">➤</button></div>
+        </div>
+      </div>
+
+      <!-- PAGE 7: MACHINE CATALOGUE -->
+      <div class="page">
+        <div class="page-scroll">
+          <div class="sec-title">Machine Catalogue</div>
+          <div class="search-bar"><span class="si">🔍</span><input type="text" placeholder="Search machines..."></div>
+          <div class="filter-tabs">
+            <div class="ftab active">All</div><div class="ftab">Chest</div><div class="ftab">Back</div><div class="ftab">Legs</div><div class="ftab">Shoulders</div><div class="ftab">Cardio</div>
+          </div>
+          <div class="machine-card"><div class="m-ico">🏋️</div><div class="m-info"><div class="m-name">Smith Machine</div><div class="m-muscles">Chest · Shoulders · Legs</div><div class="m-count">12 exercises</div><div class="chip-row"><span class="chip">Bench Press</span><span class="chip">Squat</span><span class="chip">OHP</span></div></div></div>
+          <div class="machine-card"><div class="m-ico">🚣</div><div class="m-info"><div class="m-name">Cable Station</div><div class="m-muscles">Back · Chest · Arms</div><div class="m-count">18 exercises</div><div class="chip-row"><span class="chip">Rows</span><span class="chip">Flyes</span><span class="chip">Curls</span></div></div></div>
+          <div class="machine-card"><div class="m-ico">🦵</div><div class="m-info"><div class="m-name">Leg Press</div><div class="m-muscles">Quads · Hamstrings · Glutes</div><div class="m-count">4 exercises</div><div class="chip-row"><span class="chip">Standard</span><span class="chip">Single Leg</span></div></div></div>
+          <div class="machine-card"><div class="m-ico">🏃</div><div class="m-info"><div class="m-name">Treadmill</div><div class="m-muscles">Cardio · Legs</div><div class="m-count">6 programs</div><div class="chip-row"><span class="chip">HIIT</span><span class="chip">Steady State</span></div></div></div>
+          <div class="machine-card"><div class="m-ico">🔄</div><div class="m-info"><div class="m-name">Pec Deck</div><div class="m-muscles">Chest · Front Delts</div><div class="m-count">3 exercises</div><div class="chip-row"><span class="chip">Flyes</span><span class="chip">Reverse Flyes</span></div></div></div>
+        </div>
+      </div>
+
+      <!-- PAGE 8: PRIVATE COACHING -->
+      <div class="page">
+        <div class="page-scroll">
+          <div class="sec-title">Private Coaching</div>
+          <div class="crd coach-hero">
+            <div class="coach-av">👨‍🏫</div>
+            <div class="coach-name">Coach Marcus</div>
+            <div class="coach-title">Strength & Conditioning Specialist</div>
+            <div class="coach-meta"><span class="star">★★★★★</span> <span>4.9</span> <span style="color:var(--border)">|</span> <span class="online"><span class="online-dot"></span>Online now</span></div>
+          </div>
+          <div class="crd">
+            <div class="sec-title" style="margin-bottom:6px">This Week's Plan</div>
+            <div class="week-plan">
+              <div class="day-row"><div class="day-dot done"></div><span style="flex:1">Monday — Upper A</span><span style="color:var(--neon);font-size:11px;font-weight:700">Done</span></div>
+              <div class="day-row"><div class="day-dot done"></div><span style="flex:1">Tuesday — Lower A</span><span style="color:var(--neon);font-size:11px;font-weight:700">Done</span></div>
+              <div class="day-row"><div class="day-dot done"></div><span style="flex:1">Wednesday — Rest</span><span style="color:var(--neon);font-size:11px;font-weight:700">Done</span></div>
+              <div class="day-row"><div class="day-dot"></div><span style="flex:1">Thursday — Upper B</span><span style="color:var(--muted);font-size:11px">Today</span></div>
+              <div class="day-row"><div class="day-dot"></div><span style="flex:1">Friday — Lower B</span><span style="color:var(--muted);font-size:11px">Upcoming</span></div>
+            </div>
+          </div>
+          <div class="sec-title">Chat with Coach</div>
+          <div class="chat-area">
+            <div class="bubble other"><div class="bname">Coach Marcus</div>Great session yesterday! Let's focus on form for OHP today.<div class="btime">9:15 AM</div></div>
+            <div class="bubble me"><div class="bname">You</div>Thanks Coach! My left shoulder was tight — should I warm up differently?<div class="btime">9:20 AM</div></div>
+            <div class="bubble other"><div class="bname">Coach Marcus</div>Yes — do band pull-aparts and face pulls first. 3×15 each. I'll update your plan.<div class="btime">9:22 AM</div></div>
+          </div>
+          <div class="chat-input"><input type="text" placeholder="Message Coach Marcus..."><button class="send-btn">➤</button></div>
+        </div>
+      </div>
+
+      <!-- PAGE 9: EXPLORE + EDUCATION -->
+      <div class="page">
+        <div class="page-scroll">
+          <div class="sec-title">Explore</div>
+          <div class="quick-grid">
+            <div class="qc t1" onclick="goTo(1)">🏋️ Training</div>
+            <div class="qc t2" onclick="goTo(2)">📈 Progress</div>
+            <div class="qc t4" onclick="goTo(4)">🍎 Nutrition</div>
+            <div class="qc t3" onclick="goTo(7)">👨‍🏫 Coach</div>
+          </div>
+          <div class="edu-banner">
+            <div class="ebt">IRONCORE Academy</div>
+            <div class="ebs">Level up your gym knowledge with expert articles and tips</div>
+          </div>
+          <div class="filter-tabs">
+            <div class="ftab active">All</div><div class="ftab">Tips</div><div class="ftab">Supplements</div><div class="ftab">Posing</div>
+          </div>
+          <div class="article-card"><div class="a-img c1">💡</div><div class="a-body"><div class="a-tag">Tips</div><div class="a-title">5 Warm-Up Mistakes Killing Your Gains</div><div class="a-meta">4 min read · 2.3k views</div></div></div>
+          <div class="article-card"><div class="a-img c2">💊</div><div class="a-body"><div class="a-tag">Supplements</div><div class="a-title">Creatine Loading: Myth or Science?</div><div class="a-meta">6 min read · 5.1k views</div></div></div>
+          <div class="article-card"><div class="a-img c3">🏆</div><div class="a-body"><div class="a-tag">Posing</div><div class="a-title">Master the Front Double Biceps Pose</div><div class="a-meta">3 min read · 1.8k views</div></div></div>
+        </div>
+      </div>
+
+    </div><!-- /pages-rail -->
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav" id="bottom-nav"></div>
+  </div>
+</div>
+
+<!-- DOTS + LABEL -->
+<div class="dots" id="dots"></div>
+<div class="page-label" id="page-label"></div>
+
+<script>
+const pageNames = ['Home','Training','Progress','Rewards','Nutrition','Community','Machines','Coaching','Explore'];
+const nav1 = [{i:'🏠',l:'Home',p:0},{i:'🏋️',l:'Train',p:1},{i:'📈',l:'Progress',p:2},{i:'🏆',l:'Rewards',p:3},{i:'☰',l:'More',p:8}];
+const nav2 = [{i:'🏠',l:'Home',p:0},{i:'💬',l:'Community',p:5},{i:'🍎',l:'Nutrition',p:4},{i:'🔧',l:'Machines',p:6},{i:'👨‍🏫',l:'Coach',p:7}];
+let currentPage = 0;
+const rail = document.getElementById('rail');
+const dotsEl = document.getElementById('dots');
+const labelEl = document.getElementById('page-label');
+const navEl = document.getElementById('bottom-nav');
+
+// Build dots
+for(let i=0;i<9;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dotsEl.appendChild(d);}
+
+function goTo(n){
+  currentPage=n;
+  rail.style.transform=`translateX(-${n*390}px)`;
+  document.querySelectorAll('.dot').forEach((d,i)=>{d.className=i===n?'dot active':'dot'});
+  labelEl.textContent=pageNames[n];
+  buildNav();
+}
+
+function buildNav(){
+  const set=currentPage<=3||currentPage===8?nav1:nav2;
+  navEl.innerHTML='';
+  set.forEach(item=>{
+    const b=document.createElement('button');
+    b.className='nav-btn'+(item.p===currentPage?' active':'');
+    b.innerHTML=`<span class="ico">${item.i}</span>${item.l}`;
+    b.onclick=()=>goTo(item.p);
+    navEl.appendChild(b);
+  });
+}
+
+goTo(0);
+
+// Swipe / drag
+let startX=0,startY=0,isDragging=false;
+const pi=document.querySelector('.phone-inner');
+pi.addEventListener('pointerdown',e=>{startX=e.clientX;startY=e.clientY;isDragging=true});
+pi.addEventListener('pointerup',e=>{
+  if(!isDragging)return;isDragging=false;
+  const dx=e.clientX-startX,dy=e.clientY-startY;
+  if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){
+    if(dx<0&&currentPage<8)goTo(currentPage+1);
+    else if(dx>0&&currentPage>0)goTo(currentPage-1);
+  }
+});
+
+// Nutrition Calculator
+function calcNutrition(){
+  const w=parseFloat(document.getElementById('nc-weight').value)||80;
+  const h=parseFloat(document.getElementById('nc-height').value)||178;
+  const a=parseFloat(document.getElementById('nc-age').value)||27;
+  const genderBtns=document.querySelectorAll('#gender-toggle .toggle-btn');
+  let gender='male';genderBtns.forEach(b=>{if(b.classList.contains('active'))gender=b.dataset.val});
+  const goalBtns=document.querySelectorAll('#goal-toggle .toggle-btn');
+  let goal='maintain';goalBtns.forEach(b=>{if(b.classList.contains('active'))goal=b.dataset.val});
+
+  let bmr;
+  if(gender==='male') bmr=88.362+(13.397*w)+(4.799*h)-(5.677*a);
+  else bmr=447.593+(9.247*w)+(3.098*h)-(4.330*a);
+
+  let tdee=bmr*1.55;
+  if(goal==='cut')tdee-=400;
+  else if(goal==='bulk')tdee+=300;
+
+  const protein=Math.round(w*2.2);
+  const fat=Math.round((tdee*0.25)/9);
+  const carbCals=tdee-(protein*4)-(fat*9);
+  const carbs=Math.round(Math.max(0,carbCals/4));
+  const fiber=Math.round(w*0.4);
+  const water=+(w*0.035).toFixed(1);
+  const cals=Math.round(tdee);
+
+  const maxCal=cals;
+  const rows=[
+    {l:'Calories',v:`${cals} kcal`,pct:100,cls:'cal',hl:true},
+    {l:'Protein',v:`${protein}g`,pct:(protein*4/maxCal)*100,cls:'pro'},
+    {l:'Carbohydrates',v:`${carbs}g`,pct:(carbs*4/maxCal)*100,cls:'carb'},
+    {l:'Fats',v:`${fat}g`,pct:(fat*9/maxCal)*100,cls:'fat'},
+    {l:'Fiber',v:`${fiber}g`},
+    {l:'Water',v:`${water}L`}
+  ];
+
+  let html='';
+  rows.forEach(r=>{
+    html+=`<div class="result-row"><span class="rlbl">${r.l}</span>`;
+    if(r.pct!==undefined) html+=`<div class="result-bar"><div class="fill ${r.cls}" style="width:${Math.min(r.pct,100)}%"></div></div>`;
+    html+=`<span class="rval" style="${r.hl?'color:var(--orange)':''}">${r.v}</span></div>`;
+  });
+
+  document.getElementById('results-body').innerHTML=html;
+  document.getElementById('nutrition-results').style.display='block';
+}
+
+// Toggle buttons
+document.querySelectorAll('.toggle-row').forEach(row=>{
+  row.querySelectorAll('.toggle-btn').forEach(btn=>{
+    btn.onclick=()=>{
+      row.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+  });
+});
+</script>

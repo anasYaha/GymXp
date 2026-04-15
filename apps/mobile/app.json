@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "GymXP",
+    "slug": "gymxp-mobile",
+    "scheme": "gymxp",
+    "newArchEnabled": false,
+    "plugins": [
+      "expo-router"
+    ],
+    "android": {
+      "package": "com.gymxp.mobile",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "backgroundColor": "#0B0B0B"
+      },
+      "permissions": []
+    },
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
+  }
+}

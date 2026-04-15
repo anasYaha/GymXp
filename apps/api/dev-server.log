@@ -1,0 +1,8 @@
+
+> @gymxp/api@0.1.0 dev C:\GymXP\apps\api
+> tsx watch src/server.ts
+
+GymXP API listening on http://0.0.0.0:4000
+C:\GymXP\apps\api:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @gymxp/api@0.1.0 dev: `tsx watch src/server.ts`
+Exit status 3221225786

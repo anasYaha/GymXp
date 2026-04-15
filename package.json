@@ -1,0 +1,23 @@
+{
+  "name": "gymxp-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "description": "GymXP monorepo scaffold for a gym-brand and branch-aware B2B2C platform.",
+  "packageManager": "pnpm@10.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "pnpm --filter @gymxp/api dev",
+    "dev:mobile": "pnpm --filter @gymxp/mobile dev",
+    "dev:admin": "pnpm --filter @gymxp/admin-web dev",
+    "start:api": "pnpm --filter @gymxp/api start",
+    "build": "pnpm -r build",
+    "build:api": "pnpm --filter @gymxp/api build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test:dev-a": "node scripts/test-dev-a.mjs",
+    "preview:mobile": "node scripts/render-mobile-preview.mjs"
+  }
+}
