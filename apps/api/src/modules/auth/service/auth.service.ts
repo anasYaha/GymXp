@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import { env } from "../../../core/config/env";
-import { HttpError } from "../../../core/errors/http-error";
-import type { LoginDto, RegisterDto } from "../dto/auth.dto";
-import { mapAuthUser } from "../mapper/auth.mapper";
-import { authRepository } from "../repository/auth.repository";
-import type { AuthTokenPayload } from "../types/auth.types";
+import { env } from "../../../core/config/env.js";
+import { HttpError } from "../../../core/errors/http-error.js";
+import type { LoginDto, RegisterDto } from "../dto/auth.dto.js";
+import { mapAuthUser } from "../mapper/auth.mapper.js";
+import { authRepository } from "../repository/auth.repository.js";
+import type { AuthTokenPayload } from "../types/auth.types.js";
 
 const signToken = (payload: AuthTokenPayload) =>
   jwt.sign(payload, env.jwtSecret, {

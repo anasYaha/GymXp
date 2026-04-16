@@ -1,4 +1,4 @@
-import type { BranchRecord } from "../repository/branches.repository";
+import type { BranchRecord } from "../repository/branches.repository.js";
 
 export const mapBranch = (input: BranchRecord) => ({
   id: input.id,

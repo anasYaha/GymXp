@@ -1,8 +1,8 @@
-export * from "./controller/admin.controller";
-export * from "./service/admin.service";
-export * from "./repository/admin.repository";
-export * from "./dto/admin.dto";
-export * from "./validator/admin.validator";
-export * from "./mapper/admin.mapper";
-export * from "./types/admin.types";
+export * from "./controller/admin.controller.js";
+export * from "./service/admin.service.js";
+export * from "./repository/admin.repository.js";
+export * from "./dto/admin.dto.js";
+export * from "./validator/admin.validator.js";
+export * from "./mapper/admin.mapper.js";
+export * from "./types/admin.types.js";
 

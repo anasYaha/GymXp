@@ -1,4 +1,4 @@
-import type { AuthUserRecord } from "../repository/auth.repository";
+import type { AuthUserRecord } from "../repository/auth.repository.js";
 
 export const mapAuthUser = (input: AuthUserRecord) => ({
   id: input.id,

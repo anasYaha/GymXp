@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 
-import { sendOk } from "../../../core/http/response";
-import { SessionsService } from "../service/sessions.service";
+import { sendOk } from "../../../core/http/response.js";
+import { SessionsService } from "../service/sessions.service.js";
 
 const sessionsService = new SessionsService();
 

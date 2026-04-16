@@ -1,8 +1,8 @@
-export * from "./controller/leaderboard.controller";
-export * from "./service/leaderboard.service";
-export * from "./repository/leaderboard.repository";
-export * from "./dto/leaderboard.dto";
-export * from "./validator/leaderboard.validator";
-export * from "./mapper/leaderboard.mapper";
-export * from "./types/leaderboard.types";
+export * from "./controller/leaderboard.controller.js";
+export * from "./service/leaderboard.service.js";
+export * from "./repository/leaderboard.repository.js";
+export * from "./dto/leaderboard.dto.js";
+export * from "./validator/leaderboard.validator.js";
+export * from "./mapper/leaderboard.mapper.js";
+export * from "./types/leaderboard.types.js";
 

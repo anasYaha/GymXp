@@ -1,6 +1,6 @@
-import { HttpError } from "../../../core/errors/http-error";
-import { mapBranch } from "../mapper/branches.mapper";
-import { branchesRepository } from "../repository/branches.repository";
+import { HttpError } from "../../../core/errors/http-error.js";
+import { mapBranch } from "../mapper/branches.mapper.js";
+import { branchesRepository } from "../repository/branches.repository.js";
 
 export class BranchesService {
   async listBranchesForBrand(brandId: string) {

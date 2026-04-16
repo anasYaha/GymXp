@@ -1,8 +1,8 @@
-export * from "./controller/auth.controller";
-export * from "./service/auth.service";
-export * from "./repository/auth.repository";
-export * from "./dto/auth.dto";
-export * from "./validator/auth.validator";
-export * from "./mapper/auth.mapper";
-export * from "./types/auth.types";
+export * from "./controller/auth.controller.js";
+export * from "./service/auth.service.js";
+export * from "./repository/auth.repository.js";
+export * from "./dto/auth.dto.js";
+export * from "./validator/auth.validator.js";
+export * from "./mapper/auth.mapper.js";
+export * from "./types/auth.types.js";
 

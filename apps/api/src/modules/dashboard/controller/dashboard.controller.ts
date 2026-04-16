@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 
-import { sendOk } from "../../../core/http/response";
-import { DashboardService } from "../service/dashboard.service";
+import { sendOk } from "../../../core/http/response.js";
+import { DashboardService } from "../service/dashboard.service.js";
 
 const dashboardService = new DashboardService();
 

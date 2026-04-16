@@ -1,7 +1,7 @@
 import type { Request, RequestHandler } from "express";
 import { ZodError, type AnyZodObject, type ZodSchema } from "zod";
 
-import { HttpError } from "../errors/http-error";
+import { HttpError } from "../errors/http-error.js";
 
 interface ValidationSchemas {
   body?: ZodSchema;

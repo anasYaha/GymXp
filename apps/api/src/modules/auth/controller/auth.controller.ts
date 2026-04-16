@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 
-import { sendOk } from "../../../core/http/response";
-import { AuthService } from "../service/auth.service";
+import { sendOk } from "../../../core/http/response.js";
+import { AuthService } from "../service/auth.service.js";
 
 const authService = new AuthService();
 

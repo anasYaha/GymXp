@@ -1,8 +1,8 @@
-export * from "./controller/analytics.controller";
-export * from "./service/analytics.service";
-export * from "./repository/analytics.repository";
-export * from "./dto/analytics.dto";
-export * from "./validator/analytics.validator";
-export * from "./mapper/analytics.mapper";
-export * from "./types/analytics.types";
+export * from "./controller/analytics.controller.js";
+export * from "./service/analytics.service.js";
+export * from "./repository/analytics.repository.js";
+export * from "./dto/analytics.dto.js";
+export * from "./validator/analytics.validator.js";
+export * from "./mapper/analytics.mapper.js";
+export * from "./types/analytics.types.js";
 

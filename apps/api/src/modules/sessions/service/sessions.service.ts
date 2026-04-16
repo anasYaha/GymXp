@@ -1,13 +1,13 @@
-import { HttpError } from "../../../core/errors/http-error";
-import { mapSessionAttendance, mapSessionOption } from "../mapper/sessions.mapper";
-import { authRepository } from "../../auth/repository/auth.repository";
-import { sessionsRepository } from "../repository/sessions.repository";
-import type { SessionsContext } from "../types/sessions.types";
+import { HttpError } from "../../../core/errors/http-error.js";
+import { mapSessionAttendance, mapSessionOption } from "../mapper/sessions.mapper.js";
+import { authRepository } from "../../auth/repository/auth.repository.js";
+import { sessionsRepository } from "../repository/sessions.repository.js";
+import type { SessionsContext } from "../types/sessions.types.js";
 import {
   applyWorkoutCompletionProgress,
   getStreakBonus,
   isNextCalendarDay
-} from "./progression";
+} from "./progression.js";
 
 const requireActiveBranch = (branchId?: string | null) => {
   if (!branchId) {

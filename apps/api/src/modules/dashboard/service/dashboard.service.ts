@@ -1,6 +1,6 @@
-import { HttpError } from "../../../core/errors/http-error";
-import { dashboardRepository } from "../repository/dashboard.repository";
-import { getProgressSnapshot } from "../../sessions/service/progression";
+import { HttpError } from "../../../core/errors/http-error.js";
+import { dashboardRepository } from "../repository/dashboard.repository.js";
+import { getProgressSnapshot } from "../../sessions/service/progression.js";
 
 export class DashboardService {
   async getSummary(userId: string, brandId: string, dayType?: string) {

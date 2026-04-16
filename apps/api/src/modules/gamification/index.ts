@@ -1,8 +1,8 @@
-export * from "./controller/gamification.controller";
-export * from "./service/gamification.service";
-export * from "./repository/gamification.repository";
-export * from "./dto/gamification.dto";
-export * from "./validator/gamification.validator";
-export * from "./mapper/gamification.mapper";
-export * from "./types/gamification.types";
+export * from "./controller/gamification.controller.js";
+export * from "./service/gamification.service.js";
+export * from "./repository/gamification.repository.js";
+export * from "./dto/gamification.dto.js";
+export * from "./validator/gamification.validator.js";
+export * from "./mapper/gamification.mapper.js";
+export * from "./types/gamification.types.js";
 

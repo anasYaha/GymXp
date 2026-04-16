@@ -4,8 +4,8 @@ import { ZodError } from "zod";
 
 const { JsonWebTokenError, TokenExpiredError } = jwt;
 
-import { sendError } from "../http/response";
-import { HttpError } from "../errors/http-error";
+import { sendError } from "../http/response.js";
+import { HttpError } from "../errors/http-error.js";
 
 export const errorMiddleware = (
   error: unknown,

@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 
-import { sendOk } from "../../../core/http/response";
-import { BranchesService } from "../service/branches.service";
+import { sendOk } from "../../../core/http/response.js";
+import { BranchesService } from "../service/branches.service.js";
 
 const branchesService = new BranchesService();
 

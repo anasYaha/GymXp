@@ -1,9 +1,9 @@
 import type { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
-import { env } from "../config/env";
-import { HttpError } from "../errors/http-error";
-import type { AuthTokenPayload } from "../../modules/auth/types/auth.types";
+import { env } from "../config/env.js";
+import { HttpError } from "../errors/http-error.js";
+import type { AuthTokenPayload } from "../../modules/auth/types/auth.types.js";
 
 const adminRoles = new Set(["BRANCH_ADMIN", "BRAND_OWNER", "PLATFORM_ADMIN"]);
 

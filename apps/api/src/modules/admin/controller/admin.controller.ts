@@ -1,4 +1,4 @@
-import { notImplemented } from "../../../core/utils/not-implemented";
+import { notImplemented } from "../../../core/utils/not-implemented.js";
 
 export const adminController = {
   overview: () => notImplemented("GET /admin/branches/:branchId/overview"),

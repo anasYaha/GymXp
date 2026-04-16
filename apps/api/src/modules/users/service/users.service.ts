@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 
-import { env } from "../../../core/config/env";
-import { HttpError } from "../../../core/errors/http-error";
-import { branchesRepository } from "../../branches/repository/branches.repository";
-import type { AuthTokenPayload } from "../../auth/types/auth.types";
-import { mapUser } from "../mapper/users.mapper";
-import { usersRepository } from "../repository/users.repository";
-import { getProgressSnapshot } from "../../sessions/service/progression";
+import { env } from "../../../core/config/env.js";
+import { HttpError } from "../../../core/errors/http-error.js";
+import { branchesRepository } from "../../branches/repository/branches.repository.js";
+import type { AuthTokenPayload } from "../../auth/types/auth.types.js";
+import { mapUser } from "../mapper/users.mapper.js";
+import { usersRepository } from "../repository/users.repository.js";
+import { getProgressSnapshot } from "../../sessions/service/progression.js";
 
 const signToken = (payload: AuthTokenPayload) =>
   jwt.sign(payload, env.jwtSecret, {

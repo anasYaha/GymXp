@@ -1,9 +1,9 @@
 import cors from "cors";
 import express from "express";
 
-import { env } from "./core/config/env";
-import { errorMiddleware } from "./core/middleware/error-middleware";
-import { registerRoutes } from "./routes";
+import { env } from "./core/config/env.js";
+import { errorMiddleware } from "./core/middleware/error-middleware.js";
+import { registerRoutes } from "./routes/index.js";
 
 export const createApp = () => {
   const app = express();

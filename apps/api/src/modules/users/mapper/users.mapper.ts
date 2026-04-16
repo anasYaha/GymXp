@@ -1,4 +1,4 @@
-import type { UserRecord } from "../repository/users.repository";
+import type { UserRecord } from "../repository/users.repository.js";
 
 export const mapUser = (input: UserRecord) => ({
   id: input.id,

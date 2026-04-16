@@ -1,4 +1,4 @@
-import type { SessionAttendanceRecord, SessionOptionRecord } from "../repository/sessions.repository";
+import type { SessionAttendanceRecord, SessionOptionRecord } from "../repository/sessions.repository.js";
 
 export const mapSessionOption = (input: SessionOptionRecord) => ({
   id: input.id,

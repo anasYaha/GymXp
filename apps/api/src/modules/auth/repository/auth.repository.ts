@@ -1,6 +1,6 @@
 import type { Prisma } from "@prisma/client";
 
-import { prisma } from "../../../core/database/prisma";
+import { prisma } from "../../../core/database/prisma.js";
 
 const authUserSelect = {
   id: true,

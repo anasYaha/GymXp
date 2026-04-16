@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 
-import { sendOk } from "../../../core/http/response";
-import { UsersService } from "../service/users.service";
+import { sendOk } from "../../../core/http/response.js";
+import { UsersService } from "../service/users.service.js";
 
 const usersService = new UsersService();
 
