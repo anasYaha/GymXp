@@ -5,7 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["public", "auth"]
+  schemas  = ["gymxp"]
 }
 
 enum UserRole {
@@ -14,7 +14,7 @@ enum UserRole {
   BRAND_OWNER
   PLATFORM_ADMIN
 
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 enum WorkoutStatus {
@@ -22,7 +22,7 @@ enum WorkoutStatus {
   COMPLETED
   CANCELLED
 
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 model GymBrand {
@@ -33,7 +33,7 @@ model GymBrand {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 model GymBranch {
@@ -54,7 +54,7 @@ model GymBranch {
   createdAt          DateTime                   @default(now())
   updatedAt          DateTime                   @updatedAt
 
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 model User {
@@ -84,7 +84,7 @@ model User {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
 
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 model BranchSessionOption {
@@ -102,7 +102,7 @@ model BranchSessionOption {
   updatedAt    DateTime            @updatedAt
 
   @@index([branchId, startsAt])
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 model SessionAttendance {
@@ -118,7 +118,7 @@ model SessionAttendance {
 
   @@unique([sessionOptionId, userId])
   @@index([userId, branchId, checkedInAt])
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 model WorkoutSession {
@@ -136,7 +136,7 @@ model WorkoutSession {
   updatedAt   DateTime      @updatedAt
 
   @@unique([userId, completionDay])
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 model XPLog {
@@ -149,7 +149,7 @@ model XPLog {
   reason    String
   createdAt DateTime  @default(now())
 
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 model StreakSnapshot {
@@ -162,7 +162,7 @@ model StreakSnapshot {
   recordedAt DateTime
   createdAt  DateTime  @default(now())
 
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 model LeaderboardSnapshot {
@@ -175,7 +175,7 @@ model LeaderboardSnapshot {
   snapshotAt DateTime
   createdAt  DateTime  @default(now())
 
-  @@schema("public")
+  @@schema("gymxp")
 }
 
 model BranchAnalyticsSnapshot {
@@ -190,5 +190,5 @@ model BranchAnalyticsSnapshot {
   recordedAt         DateTime
   createdAt          DateTime  @default(now())
 
-  @@schema("public")
+  @@schema("gymxp")
 }
