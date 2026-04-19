@@ -28,6 +28,34 @@ const getErrorMessage = (error: unknown, fallback = "Something went wrong.") => 
   return error instanceof Error && error.message.trim() ? error.message : fallback;
 };
 
+const validateRegisterInput = (input: RegisterRequest) => {
+  if (input.fullName.trim().length < 2) {
+    return "Full name must be at least 2 characters.";
+  }
+
+  if (!input.email.trim()) {
+    return "Email is required.";
+  }
+
+  if (input.password.length < 8) {
+    return "Password must be at least 8 characters.";
+  }
+
+  return null;
+};
+
+const validateLoginInput = (input: { email: string; password: string }) => {
+  if (!input.email.trim()) {
+    return "Email is required.";
+  }
+
+  if (input.password.length < 8) {
+    return "Password must be at least 8 characters.";
+  }
+
+  return null;
+};
+
 export const MobileAppRoot = () => {
   const [authMode, setAuthMode] = useState<AuthMode>("login");
   const [token, setToken] = useState<string | null>(null);
@@ -219,6 +247,12 @@ export const MobileAppRoot = () => {
 
   const handleRegister = async (input: RegisterRequest) =>
     withSubmit(async () => {
+      const validationError = validateRegisterInput(input);
+
+      if (validationError) {
+        throw new Error(validationError);
+      }
+
       logAuth("register-submit", {
         email: input.email
       });
@@ -242,6 +276,12 @@ export const MobileAppRoot = () => {
 
   const handleLogin = async (input: { email: string; password: string }) =>
     withSubmit(async () => {
+      const validationError = validateLoginInput(input);
+
+      if (validationError) {
+        throw new Error(validationError);
+      }
+
       logAuth("login-submit", {
         email: input.email
       });

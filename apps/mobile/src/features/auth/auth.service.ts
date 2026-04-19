@@ -27,7 +27,11 @@ const normalizeAuthMessage = (message: string) => {
   }
 
   if (normalized.includes("password should be at least")) {
-    return "Password must be at least 6 characters.";
+    return "Password must be at least 8 characters.";
+  }
+
+  if (normalized.includes("invalid request body")) {
+    return "Please check your details. Password must be at least 8 characters.";
   }
 
   return message;

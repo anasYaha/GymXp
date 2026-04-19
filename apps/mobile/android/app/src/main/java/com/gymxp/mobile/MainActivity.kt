@@ -1,4 +1,4 @@
-package com.anonymous.gymxpmobile
+package com.gymxp.mobile
 
 import android.os.Build
 import android.os.Bundle

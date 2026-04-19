@@ -45,7 +45,7 @@ const request = async <T>(
 };
 
 export const apiClient = {
-  baseUrl: process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://localhost:4000",
+  baseUrl: process.env.EXPO_PUBLIC_API_BASE_URL?.trim() ?? "http://localhost:4000",
   get: <T>(path: string) => request<T>(path),
   post: <T>(path: string, body: unknown) =>
     request<T>(path, {
